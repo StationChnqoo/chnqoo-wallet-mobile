@@ -60,36 +60,12 @@ class Services {
     return result;
   }
 
-  selectTest() async {
-    var result = await dio.get('/test');
-    return result;
-  }
-
-  sendSms(String mobile) async {
-    var result = await dio.get('/sendSms.do',
-        queryParameters: Map.from({"mobile": mobile}));
-    return result.data;
-  }
-
-  checkSms(String mobile, String code) async {
-    var result = await dio.get("/checkSms.do",
-        queryParameters: Map.from({"mobile": mobile, "code": code}));
-    return result.data;
-  }
-
-  upload(String id, String idQoo, String file) async {
-    String fileName = file.split('/').last;
-
-    FormData formData = FormData.fromMap({
-      'file': await MultipartFile.fromFile(
-        file,
-        filename: fileName,
-        contentType: MediaType.parse(lookupMimeType(file) ?? ""),
-      ),
-      "id": id,
-      "idQoo": idQoo
-    });
-    var result = await dio.post('/fileUploader.do', data: formData);
-    return result.data;
+  selectEastMoneyBonds() async {
+    DateTime now = DateTime.now();
+    int milliseconds = now.millisecondsSinceEpoch;
+    dio.options.baseUrl = 'https://97.push2delay.eastmoney.com';
+    Response response = await dio.get(
+        '/api/qt/clist/get?pn=1&pz=20&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&wbp2u=|0|0|0|web&fid=f3&fs=i:1.000012,i:1.000013,i:1.000022,i:1.000061,i:0.395021,i:0.395022,i:0.395031,i:0.395032,i:0.399481&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f22,f33,f11,f62,f128,f136,f115,f152&_=${milliseconds}');
+    return response.data;
   }
 }

@@ -51,11 +51,15 @@ class HomeToolBarState extends State<HomeToolBar>
                       width: 36.0,
                       height: 36.0,
                       borderRadius: BorderRadius.circular(18.0)),
-                  Image.asset(
-                    'assets/app_logo.png',
-                    height: 48,
-                    fit: BoxFit.fitWidth,
+                  Text(
+                    '蚂蚁财富创作中心',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
+                  // Image.asset(
+                  //   'assets/app_logo.png',
+                  //   height: 48,
+                  //   fit: BoxFit.fitWidth,
+                  // ),
                   // Row(
                   //   children: [
                   //     Text(

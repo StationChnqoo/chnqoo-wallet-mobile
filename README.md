@@ -1,4 +1,4 @@
-# ChnqooRickshowMobile
+# ChnqooWalletMobile
 
 ## 环境
 
@@ -7,29 +7,29 @@
 ### Development
 
 ```java
-flutter run --dart-define APP_PACKAGE_NAME=net.cctv3.rickshow.dev --dart-define APP_NAME=RickshowDev -v
+flutter run --dart-define APP_PACKAGE_NAME=net.cctv3.wallet.dev --dart-define APP_NAME=walletDev -v
 ```
 
 ### Staging
 
 ```java
-flutter run --dart-define APP_PACKAGE_NAME=net.cctv3.rickshow.sit --dart-define APP_NAME=RickshowSit -v
+flutter run --dart-define APP_PACKAGE_NAME=net.cctv3.wallet.sit --dart-define APP_NAME=walletSit -v
 ```
 
 ### Alpha
 
 ```java
-flutter run --dart-define APP_PACKAGE_NAME=net.cctv3.rickshow.uat --dart-define APP_NAME=RickshowUat -v
+flutter run --dart-define APP_PACKAGE_NAME=net.cctv3.wallet.uat --dart-define APP_NAME=walletUat -v
 ```
 
 ```java
-flutter build apk --release --dart-define APP_PACKAGE_NAME=net.cctv3.rickshow.uat --dart-define APP_NAME=RickshowUat -v
+flutter build apk --release --dart-define APP_PACKAGE_NAME=net.cctv3.wallet.uat --dart-define APP_NAME=walletUat -v
 ```
 
 ### Production
 
 ```java
-flutter build apk --release --dart-define APP_PACKAGE_NAME=net.cctv3.rickshow --dart-define APP_NAME=RickshowPro -v
+flutter build apk --release --dart-define APP_PACKAGE_NAME=net.cctv3.wallet --dart-define APP_NAME=walletPro -v
 ```
 
 理论上所有的变量都可以加在环境变量里面，这样儿就会导致构建命令过长，而且不易于维护，所以构建命令只包含了两个关键的参数，其余的配置从`.env.?`来读取 ...
@@ -45,10 +45,10 @@ await dotenv.load(fileName: env);
 ```dart
 static String useConfigDotenvFile(String package) {
   const map = {
-    'net.cctv3.rickshow': ".env.production",
-    "net.cctv3.rickshow.uat": ".env.alpha",
-    "net.cctv3.rickshow.sit": ".env.staging",
-    "net.cctv3.rickshow.dev": ".env.development"
+    'net.cctv3.wallet': ".env.production",
+    "net.cctv3.wallet.uat": ".env.alpha",
+    "net.cctv3.wallet.sit": ".env.staging",
+    "net.cctv3.wallet.dev": ".env.development"
   };
   return map[package]!;
 }

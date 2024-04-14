@@ -19,10 +19,10 @@ class Config {
   /** 映射Config文件 */
   static String useConfigDotenvFile(String package) {
     const map = {
-      'net.cctv3.rickshaw': ".env.production",
-      "net.cctv3.rickshaw.uat": ".env.alpha",
-      "net.cctv3.rickshaw.sit": ".env.staging",
-      "net.cctv3.rickshaw.dev": ".env.development"
+      'net.cctv3.wallet': ".env.production",
+      "net.cctv3.wallet.uat": ".env.alpha",
+      "net.cctv3.wallet.sit": ".env.staging",
+      "net.cctv3.wallet.dev": ".env.development"
     };
     return map[package] ?? '.env.development';
   }
