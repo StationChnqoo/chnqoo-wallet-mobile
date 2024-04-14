@@ -16,9 +16,11 @@ class QuotesList extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      margin: EdgeInsets.zero,
+      width: double.infinity,
+      margin: EdgeInsets.only(bottom: 12),
       child: MyTitleCard(
         title: '债券指数',
+        
         child: Column(children: [
           ...list
               .asMap()

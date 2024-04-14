@@ -1,13 +1,16 @@
 import 'package:chnqoo_wallet/constants/bond.dart';
+import 'package:chnqoo_wallet/constants/bond_news.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/pages/home/widgets/menus.dart';
 import 'package:chnqoo_wallet/pages/quotes/widgets/list.dart';
+import 'package:chnqoo_wallet/pages/quotes/widgets/news.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:beautiful_soup_dart/beautiful_soup.dart';
 
 class QuotesPage extends StatefulWidget {
   const QuotesPage({super.key});
@@ -21,6 +24,7 @@ class QuotesPageState extends State<QuotesPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   GetStores stores = Get.find<GetStores>();
   List<Bond> bonds = [];
+  List<BondNews> news = [];
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +46,8 @@ class QuotesPageState extends State<QuotesPage> {
             SizedBox(
               height: 12,
             ),
-            QuotesList(list: bonds)
+            QuotesList(list: bonds),
+            QuotesNews(datas: news)
           ],
         )),
       ),
@@ -56,8 +61,23 @@ class QuotesPageState extends State<QuotesPage> {
     var data = result['data'] as Map<String, dynamic>;
     //  List<dynamic> diff = json.decode(data['diff']).cast<Map<String, dynamic>>();
     // var diff = data['diff'] as Map<String, dynamic>;
-    bonds = data['diff']
-        .map<Bond>((json) => Bond.fromJson(json))
+    bonds = data['diff'].map<Bond>((json) => Bond.fromJson(json)).toList();
+    setState(() {});
+  }
+
+  String findClassText(Bs4Element e, String class_) =>
+      e.find('p', class_: class_)!.text.trim();
+  initNews() async {
+    var result = await Services().selectEastMoneyBondsNews();
+    BeautifulSoup bs = BeautifulSoup(result.toString());
+    var ul = bs.find('ul', class_: 'guidance_list guidance_325 active');
+    var lis = ul!.findAll('li');
+    news = lis
+        .map<BondNews>((e) => BondNews(
+            title: findClassText(e, 'title'),
+            detail: findClassText(e, 'detail'),
+            time: findClassText(e, 'time'),
+            tags: []))
         .toList();
     setState(() {});
   }
@@ -68,5 +88,6 @@ class QuotesPageState extends State<QuotesPage> {
     super.initState();
     initGetStores();
     initDatas();
+    initNews();
   }
 }
