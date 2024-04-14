@@ -220,4 +220,8 @@ class x {
       duration: Duration(seconds: 2), // Duration
     );
   }
+
+  static toText(dynamic s) {
+    return s is String ? s : s.toString();
+  }
 }
