@@ -23,8 +23,23 @@ if (flutterVersionName == null) {
     flutterVersionName = "1.0"
 }
 
+def commandParams = project.property("dart-defines");
+
+logger.info("Console -> Reading build params from command line: ");
+logger.info('Console -> dart-defines:' + commandParams);
+
+def params = commandParams.split(",").collectEntries { entry ->
+    def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+    logger.info("Console -> decode: " + pair.first() + ':' + pair.last());
+    [(pair.first()): pair.last()]
+}
+
+logger.info("Console -> Confirmed params.")
+logger.info("Console -> Building: " + params.APP_PACKAGE_NAME);
+logger.info("Console -> Building: " + params.APP_NAME);
+
 android {
-    namespace = "com.example.chnqoo_wallet"
+    namespace = "net.cctv3.wallet"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -35,9 +50,8 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.chnqoo_wallet"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+        applicationId params.APP_PACKAGE_NAME
+        resValue "string", "app_name", params.APP_NAME
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()

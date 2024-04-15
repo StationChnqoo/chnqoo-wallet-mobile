@@ -1,4 +1,4 @@
-package com.example.chnqoo_wallet
+package net.cctv3.wallet
 
 import io.flutter.embedding.android.FlutterActivity
 
