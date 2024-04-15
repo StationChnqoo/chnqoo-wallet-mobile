@@ -74,4 +74,11 @@ class Services {
     Response response = await dio.get('');
     return response.data;
   }
+
+  selectZhishubao() async {
+    dio.options.baseUrl = 'https://zhishubao.1234567.com.cn';
+    Response response = await dio.post('/home/AllIndex',
+        queryParameters: Map.from({'dateType': 'D'}));
+    return response.data;
+  }
 }

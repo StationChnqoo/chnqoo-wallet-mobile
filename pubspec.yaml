@@ -45,7 +45,8 @@ dependencies:
   swipe_cards: ^2.0.0+1
   scrollable_positioned_list: ^0.3.8
   beautiful_soup_dart: ^0.3.0
-
+  fl_chart: ^0.67.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

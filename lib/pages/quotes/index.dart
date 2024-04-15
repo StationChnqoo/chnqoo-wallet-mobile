@@ -3,7 +3,9 @@ import 'package:chnqoo_wallet/constants/bond_news.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
+import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:chnqoo_wallet/pages/home/widgets/menus.dart';
+import 'package:chnqoo_wallet/pages/quotes/widgets/chart.dart';
 import 'package:chnqoo_wallet/pages/quotes/widgets/list.dart';
 import 'package:chnqoo_wallet/pages/quotes/widgets/news.dart';
 import 'package:chnqoo_wallet/routes/routes.dart';
@@ -26,6 +28,7 @@ class QuotesPageState extends State<QuotesPage> {
   GetStores stores = Get.find<GetStores>();
   List<Bond> bonds = [];
   List<BondNews> news = [];
+  Map<String, int> countMap = {};
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +51,7 @@ class QuotesPageState extends State<QuotesPage> {
               height: 12,
             ),
             QuotesList(list: bonds),
+            QuotesChart(countMap: countMap),
             QuotesNews(datas: news),
             Container(
               margin: EdgeInsets.only(bottom: 12),
@@ -105,6 +109,32 @@ class QuotesPageState extends State<QuotesPage> {
     setState(() {});
   }
 
+  initZhishubao() async {
+    var result = await Services().selectZhishubao();
+    BeautifulSoup bs = BeautifulSoup(result.toString());
+    var lis = bs.findAll('li');
+    double sum = 0;
+    int count = 0;
+    for (int i = 0; i < lis.length; i++) {
+      Bs4Element item = lis[i];
+      if (item.text.contains("中债")) {
+        // double percentage = double.parse(percentageString.replaceAll('%', '')) / 100;
+        String value = item.find('span', class_: 'name fr bold')!.text;
+        double _value = double.parse(value.replaceAll('%', ''));
+        count++;
+        sum += _value;
+        if (countMap.containsKey(value)) {
+          countMap[value] = countMap[value]! + 1;
+        } else {
+          countMap[value] = 1;
+        }
+        // print(item.getAttrValue('title')! + _value.toString());
+        // print(item.find('span', class_: 'name fl')!.text);
+      }
+    }
+    setState(() {});
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -112,5 +142,6 @@ class QuotesPageState extends State<QuotesPage> {
     initGetStores();
     initDatas();
     initNews();
+    initZhishubao();
   }
 }
