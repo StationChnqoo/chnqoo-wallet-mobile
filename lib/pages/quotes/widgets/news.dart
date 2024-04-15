@@ -35,9 +35,22 @@ class QuotesNews extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 13,
-                        color: Colors.black54,
+                        color: Colors.grey[600],
                       ),
                       maxLines: 4,
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(),
+                        Text(
+                          e.value.time,
+                          style: TextStyle(fontSize: 10, color: Colors.black38),
+                        )
+                      ],
                     )
                   ],
                 ),

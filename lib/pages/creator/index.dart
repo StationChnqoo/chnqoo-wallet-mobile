@@ -1,26 +1,23 @@
+import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:chnqoo_wallet/constants/bond.dart';
 import 'package:chnqoo_wallet/constants/bond_news.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
-import 'package:chnqoo_wallet/pages/home/widgets/menus.dart';
-import 'package:chnqoo_wallet/pages/quotes/widgets/list.dart';
-import 'package:chnqoo_wallet/pages/quotes/widgets/news.dart';
-import 'package:chnqoo_wallet/routes/routes.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
 
-class QuotesPage extends StatefulWidget {
-  const QuotesPage({super.key});
+class CreatorPage extends StatefulWidget {
+  const CreatorPage({super.key});
 
   @override
-  State<QuotesPage> createState() => QuotesPageState();
+  State<CreatorPage> createState() => CreatorPageState();
 }
 
-class QuotesPageState extends State<QuotesPage> {
+class CreatorPageState extends State<CreatorPage> {
   ScrollController? swiper;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   GetStores stores = Get.find<GetStores>();
@@ -33,7 +30,7 @@ class QuotesPageState extends State<QuotesPage> {
       key: scaffoldKey,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
-        child: MyToolBar(title: '行情看板', onBackPress: () => Get.back()),
+        child: MyToolBar(title: '文案编辑', onBackPress: () => Get.back()),
       ),
       body: Container(
         height: double.infinity,
@@ -47,8 +44,10 @@ class QuotesPageState extends State<QuotesPage> {
             SizedBox(
               height: 12,
             ),
-            QuotesList(list: bonds),
-            QuotesNews(datas: news),
+            Text(buildString()),
+            SizedBox(
+              height: 12,
+            ),
             Container(
               margin: EdgeInsets.only(bottom: 12),
               child: Row(
@@ -63,9 +62,10 @@ class QuotesPageState extends State<QuotesPage> {
                       ),
                       FilledButton(
                           onPressed: () {
-                            Get.toNamed(RoutesClass.CREATOR);
+                            Clipboard.setData(
+                                ClipboardData(text: buildString()));
                           },
-                          child: Text('一键生成文案 '))
+                          child: Text('复制 '))
                     ],
                   )
                 ],
@@ -75,6 +75,28 @@ class QuotesPageState extends State<QuotesPage> {
         )),
       ),
     );
+  }
+
+  buildString() {
+    String result = '';
+    List<String> head = [
+      '家人们，专业播报还是得交给专业的人，我花了一个星期的时间写了个脚本每天10:00 11:30 14:00 15:30准时为大家播报最新债券行情和咨询。',
+      '创作不易，家人们点点关注点点赞。',
+      '您的支持就是我创作的最大动力，ღ( ´･ᴗ･` )比心。'
+    ];
+    String bondString = '债券行情\n';
+    for (int i = 0; i < bonds.length; i++) {
+      Bond bond = bonds[i];
+      bondString +=
+          '${bond.f12}/${bond.f14} ${bond.f3 is String ? bond.f3 : bond.f3 > 0 ? '涨${bond.f3}%' : '跌${bond.f3}%'}\n';
+    }
+    String newsString = '债券资讯\n';
+    for (int i = 0; i < 5; i++) {
+      BondNews bn = news[i];
+      newsString += '${bn.time}\n${bn.title}\n\n${bn.detail}\n\n';
+    }
+    result = [head.join('\n'), '', bondString, newsString].join('\n').trim();
+    return result;
   }
 
   initGetStores() {}
