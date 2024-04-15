@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:chnqoo_wallet/constants/bond.dart';
 import 'package:chnqoo_wallet/constants/bond_news.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
+import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -88,10 +91,10 @@ class CreatorPageState extends State<CreatorPage> {
     for (int i = 0; i < bonds.length; i++) {
       Bond bond = bonds[i];
       bondString +=
-          '${bond.f12}/${bond.f14} ${bond.f3 is String ? bond.f3 : bond.f3 > 0 ? '涨${bond.f3}%' : '跌${bond.f3}%'}\n';
+          '${bond.f12}/${bond.f14} ${bond.f3 is String ? bond.f3 : bond.f3 > 0 ? '涨${bond.f3}%' : '跌${bond.f3}%'} 成交量：${x.toText(bond.f5)} 成交额：${x.toText(bond.f6)}\n';
     }
     String newsString = '债券资讯\n';
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < min(5, news.length); i++) {
       BondNews bn = news[i];
       newsString += '${bn.time}\n${bn.title}\n\n${bn.detail}\n\n';
     }

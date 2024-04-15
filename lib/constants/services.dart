@@ -1,7 +1,5 @@
 import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:dio/dio.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:mime/mime.dart';
 
 // Dio在原有返回的结构上包了一层data -> {data: {success: bool, data: map}}
 
