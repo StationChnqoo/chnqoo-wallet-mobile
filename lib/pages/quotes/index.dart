@@ -1,19 +1,20 @@
+import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:chnqoo_wallet/constants/bond.dart';
 import 'package:chnqoo_wallet/constants/bond_news.dart';
+import 'package:chnqoo_wallet/constants/bond_table.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
+import 'package:chnqoo_wallet/constants/mock.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
-import 'package:chnqoo_wallet/constants/x.dart';
-import 'package:chnqoo_wallet/pages/home/widgets/menus.dart';
 import 'package:chnqoo_wallet/pages/quotes/widgets/chart.dart';
 import 'package:chnqoo_wallet/pages/quotes/widgets/list.dart';
 import 'package:chnqoo_wallet/pages/quotes/widgets/news.dart';
+import 'package:chnqoo_wallet/pages/quotes/widgets/table.dart';
 import 'package:chnqoo_wallet/routes/routes.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
 
 class QuotesPage extends StatefulWidget {
   const QuotesPage({super.key});
@@ -29,6 +30,7 @@ class QuotesPageState extends State<QuotesPage> {
   List<Bond> bonds = [];
   List<BondNews> news = [];
   Map<String, int> countMap = {};
+  List<BondTable> tables = [];
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,9 @@ class QuotesPageState extends State<QuotesPage> {
               height: 12,
             ),
             QuotesList(list: bonds),
+            ...tables.map(
+              (e) => QuotesTable(bt: e),
+            ),
             QuotesChart(countMap: countMap),
             QuotesNews(datas: news),
             Container(
@@ -135,6 +140,14 @@ class QuotesPageState extends State<QuotesPage> {
     setState(() {});
   }
 
+  initTables() {
+    tables = Mock()
+        .initBondTables()
+        .map<BondTable>((e) => BondTable.fromJson(e))
+        .toList();
+    setState(() {});
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -143,5 +156,6 @@ class QuotesPageState extends State<QuotesPage> {
     initDatas();
     initNews();
     initZhishubao();
+    initTables();
   }
 }
