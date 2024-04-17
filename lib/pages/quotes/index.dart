@@ -37,6 +37,12 @@ class QuotesPageState extends State<QuotesPage> {
     onUpdateTables(i, j, k, 1);
   }
 
+  onWeatherPress(int i) {
+    var _tables = [...stores.bondTables];
+    _tables[i].weather = (_tables[i].weather + 1) % 3 + 1;
+    stores.setBondTables(_tables);
+  }
+
   onUpdateTables(int i, int j, int k, int clicks) {
     var _tables = [...stores.bondTables];
     int iint = _tables[i].rows[j].value[k];
@@ -72,6 +78,7 @@ class QuotesPageState extends State<QuotesPage> {
                             bt: e.value,
                             onDoublePress: (j, k) => onDoublePress(e.key, j, k),
                             onPress: (j, k) => onPress(e.key, j, k),
+                            onWeatherPress: () => onWeatherPress(e.key),
                           ),
                         ),
                   ],

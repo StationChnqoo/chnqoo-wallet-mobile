@@ -10,9 +10,13 @@ class QuotesTable extends StatelessWidget {
   BondTable bt;
   final onDoublePress;
   final onPress;
+  final onWeatherPress;
 
   QuotesTable(
-      {required this.bt, required this.onDoublePress, required this.onPress});
+      {required this.bt,
+      required this.onDoublePress,
+      required this.onPress,
+      required this.onWeatherPress});
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +33,14 @@ class QuotesTable extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Image.asset(
-                      'assets/weather_${bt.weather}.png',
-                      height: 32,
-                      width: 32,
-                      color: Theme.of(context).primaryColor,
+                    GestureDetector(
+                      onTap: () => onWeatherPress(),
+                      child: Image.asset(
+                        'assets/weather_${bt.weather}.png',
+                        height: 32,
+                        width: 32,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                     SizedBox(
                       width: 6,
