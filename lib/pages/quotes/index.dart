@@ -32,6 +32,20 @@ class QuotesPageState extends State<QuotesPage> {
   Map<String, int> countMap = {};
   List<BondTable> tables = [];
 
+  onDoublePress(int i, int j, int k) {
+    onUpdateTables(i, j, k, 2);
+  }
+
+  onPress(int i, int j, int k) {
+    onUpdateTables(i, j, k, 1);
+  }
+
+  onUpdateTables(int i, int j, int k, int clicks) {
+    int iint = tables[i].rows[j].value[k];
+    tables[i].rows[j].value[k] = [0, iint == 0 ? 1 : -iint, 0][clicks];
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +67,14 @@ class QuotesPageState extends State<QuotesPage> {
               height: 12,
             ),
             QuotesList(list: bonds),
-            ...tables.map(
-              (e) => QuotesTable(bt: e),
-            ),
+            ...tables.asMap().entries.map(
+                  (e) => QuotesTable(
+                    bt: e.value,
+                    
+                    onDoublePress: (j, k) => onDoublePress(e.key, j, k),
+                    onPress: (j, k) => onPress(e.key, j, k),
+                  ),
+                ),
             QuotesChart(countMap: countMap),
             QuotesNews(datas: news),
             Container(

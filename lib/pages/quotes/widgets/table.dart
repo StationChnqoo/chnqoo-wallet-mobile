@@ -8,8 +8,11 @@ import 'package:flutter/material.dart';
 
 class QuotesTable extends StatelessWidget {
   BondTable bt;
+  final onDoublePress;
+  final onPress;
 
-  QuotesTable({required this.bt});
+  QuotesTable(
+      {required this.bt, required this.onDoublePress, required this.onPress});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +68,7 @@ class QuotesTable extends StatelessWidget {
                           .entries
                           .map((e) => DataColumn(
                                   label: Container(
-                                width: e.key == 0 ? 63 : 32,
+                                width: e.key == 0 ? 48 : 32,
                                 child: Text(
                                   e.value,
                                   style: TextStyle(color: Colors.black54),
@@ -73,24 +76,32 @@ class QuotesTable extends StatelessWidget {
                               )))
                           .toList(),
                       rows: [
-                        ...bt.rows.map((i) => DataRow(cells: [
+                        ...bt.rows.asMap().entries.map((i) => DataRow(cells: [
                               DataCell(Text(
-                                i.name,
+                                i.value.name,
                                 style: TextStyle(
                                     color: Colors.black54, fontSize: 14),
                               )),
-                              ...i.value.map((j) => DataCell(Container(
-                                    height: 24,
-                                    width: 24,
-                                    margin: EdgeInsets.all(2),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(6),
-                                        color: [
-                                          Colors.green.withOpacity(0.618),
-                                          Colors.black12,
-                                          Colors.red.withOpacity(0.618)
-                                        ][j + 1]),
-                                  )))
+                              ...i.value.value.asMap().entries.map((j) =>
+                                  DataCell(
+                                    GestureDetector(
+                                        onLongPress: () =>
+                                            onDoublePress(i.key, j.key),
+                                        onTap: () => onPress(i.key, j.key),
+                                        child: Container(
+                                          height: 24,
+                                          width: 24,
+                                          margin: EdgeInsets.all(2),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
+                                              color: [
+                                                Colors.green.withOpacity(0.618),
+                                                Colors.black12,
+                                                Colors.red.withOpacity(0.618)
+                                              ][j.value + 1]),
+                                        )),
+                                  ))
                             ])),
                       ])),
               SizedBox(
