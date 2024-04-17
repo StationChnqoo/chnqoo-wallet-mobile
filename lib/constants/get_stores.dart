@@ -1,4 +1,5 @@
 import 'package:chnqoo_wallet/constants/bing_wall_paper.dart';
+import 'package:chnqoo_wallet/constants/bond_table.dart';
 import 'package:chnqoo_wallet/constants/mock.dart';
 import 'package:chnqoo_wallet/constants/user.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,8 @@ class GetStores extends GetxController {
   final storage = GetStorage();
   var user = User.fromJson(Mock().initUser()).obs;
   var bingWallPaper = BingWallPaper.fromJson(Mock().initBingWallPaper()).obs;
+  var bondTables = <BondTable>[].obs;
+
   /** 系统变量 */
   /** 无需缓存，原则上是只能在Stores内部进行修改 */
   var isSignIn = false.obs;
@@ -28,6 +31,16 @@ class GetStores extends GetxController {
     if (bingWallPaperCache != null) {
       bingWallPaper.value = BingWallPaper.fromJson(bingWallPaperCache);
     }
+    var bondTablesCache = storage.read('bondTables');
+    if (bondTablesCache == null) {
+      bondTables.value = Mock()
+          .initBondTables()
+          .map<BondTable>((e) => BondTable.fromJson(e))
+          .toList();
+    } else {
+      bondTables.value =
+          bondTablesCache.map<BondTable>((e) => BondTable.fromJson(e)).toList();
+    }
   }
 
   @override
@@ -40,6 +53,11 @@ class GetStores extends GetxController {
   void setBingWallPaper(BingWallPaper bwp) {
     bingWallPaper.value = bwp;
     storage.write("bingWallPaper", bwp);
+  }
+
+  void setBondTables(List<BondTable> tables) {
+    bondTables.value = tables;
+    storage.write('bondTables', tables);
   }
 
   void setUser(User u) {

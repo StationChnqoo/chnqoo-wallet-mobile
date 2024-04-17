@@ -1,10 +1,8 @@
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:chnqoo_wallet/constants/bond.dart';
 import 'package:chnqoo_wallet/constants/bond_news.dart';
-import 'package:chnqoo_wallet/constants/bond_table.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
-import 'package:chnqoo_wallet/constants/mock.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/pages/quotes/widgets/chart.dart';
 import 'package:chnqoo_wallet/pages/quotes/widgets/list.dart';
@@ -30,7 +28,6 @@ class QuotesPageState extends State<QuotesPage> {
   List<Bond> bonds = [];
   List<BondNews> news = [];
   Map<String, int> countMap = {};
-  List<BondTable> tables = [];
 
   onDoublePress(int i, int j, int k) {
     onUpdateTables(i, j, k, 2);
@@ -41,9 +38,10 @@ class QuotesPageState extends State<QuotesPage> {
   }
 
   onUpdateTables(int i, int j, int k, int clicks) {
-    int iint = tables[i].rows[j].value[k];
-    tables[i].rows[j].value[k] = [0, iint == 0 ? 1 : -iint, 0][clicks];
-    setState(() {});
+    var _tables = [...stores.bondTables];
+    int iint = _tables[i].rows[j].value[k];
+    _tables[i].rows[j].value[k] = [0, iint == 0 ? 1 : -iint, 0][clicks];
+    stores.setBondTables(_tables);
   }
 
   @override
@@ -67,14 +65,17 @@ class QuotesPageState extends State<QuotesPage> {
               height: 12,
             ),
             QuotesList(list: bonds),
-            ...tables.asMap().entries.map(
-                  (e) => QuotesTable(
-                    bt: e.value,
-                    
-                    onDoublePress: (j, k) => onDoublePress(e.key, j, k),
-                    onPress: (j, k) => onPress(e.key, j, k),
-                  ),
-                ),
+            Obx(() => Column(
+                  children: [
+                    ...stores.bondTables.asMap().entries.map(
+                          (e) => QuotesTable(
+                            bt: e.value,
+                            onDoublePress: (j, k) => onDoublePress(e.key, j, k),
+                            onPress: (j, k) => onPress(e.key, j, k),
+                          ),
+                        ),
+                  ],
+                )),
             QuotesChart(countMap: countMap),
             QuotesNews(datas: news),
             Container(
@@ -137,16 +138,12 @@ class QuotesPageState extends State<QuotesPage> {
     var result = await Services().selectZhishubao();
     BeautifulSoup bs = BeautifulSoup(result.toString());
     var lis = bs.findAll('li');
-    double sum = 0;
-    int count = 0;
     for (int i = 0; i < lis.length; i++) {
       Bs4Element item = lis[i];
       if (item.text.contains("中债")) {
         // double percentage = double.parse(percentageString.replaceAll('%', '')) / 100;
         String value = item.find('span', class_: 'name fr bold')!.text;
         double _value = double.parse(value.replaceAll('%', ''));
-        count++;
-        sum += _value;
         if (countMap.containsKey(value)) {
           countMap[value] = countMap[value]! + 1;
         } else {
@@ -159,14 +156,6 @@ class QuotesPageState extends State<QuotesPage> {
     setState(() {});
   }
 
-  initTables() {
-    tables = Mock()
-        .initBondTables()
-        .map<BondTable>((e) => BondTable.fromJson(e))
-        .toList();
-    setState(() {});
-  }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -175,6 +164,5 @@ class QuotesPageState extends State<QuotesPage> {
     initDatas();
     initNews();
     initZhishubao();
-    initTables();
   }
 }
