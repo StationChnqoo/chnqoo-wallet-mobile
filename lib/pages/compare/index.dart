@@ -3,6 +3,7 @@ import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/constants/x.dart';
+import 'package:chnqoo_wallet/pages/compare/widgets/chart.dart';
 import 'package:chnqoo_wallet/pages/compare/widgets/list.dart';
 import 'package:chnqoo_wallet/pages/compare/widgets/time.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
@@ -88,6 +89,7 @@ class ComparePageState extends State<ComparePage> {
             CompareTime(
                 onPress: onTimePress, startTime: times[0], endTime: times[1]),
             CompareList(),
+            CompareChart(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -99,7 +101,7 @@ class ComparePageState extends State<ComparePage> {
                     },
                     label: Text('开始科学分析 ...'))
               ],
-            )
+            ),
           ],
         )),
       ),
@@ -118,7 +120,7 @@ class ComparePageState extends State<ComparePage> {
         .map<BondCompare>((json) => BondCompare.fromJson(json))
         .toList();
   }
-  
+
   @override
   void initState() {
     // TODO: implement initState
