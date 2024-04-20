@@ -66,10 +66,8 @@ class Services {
         '/api/qt/clist/get?pn=1&pz=20&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&wbp2u=|0|0|0|web&fid=f3&fs=i:1.000012,i:1.000013,i:1.000022,i:1.000061,i:0.395021,i:0.395022,i:0.395031,i:0.395032,i:0.399481&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f22,f33,f11,f62,f128,f136,f115,f152&_=${milliseconds}');
     return response.data;
   }
-  
+
   selectEastMoneyBondsNews() async {
-    DateTime now = DateTime.now();
-    int milliseconds = now.millisecondsSinceEpoch;
     dio.options.baseUrl = 'https://bond.eastmoney.com';
     Response response = await dio.get('');
     return response.data;
@@ -79,6 +77,22 @@ class Services {
     dio.options.baseUrl = 'https://zhishubao.1234567.com.cn';
     Response response = await dio.post('/home/AllIndex',
         queryParameters: Map.from({'dateType': 'D'}));
+    return response.data;
+  }
+
+  selectBondPrice(String id, String startDate, String endDate) async {
+    dio.options.baseUrl = 'https://api.fund.eastmoney.com';
+    dio.options.headers = {
+      // 在这里添加你想要的headers
+      'host': 'api.fund.eastmoney.com',
+      'referer': 'https://fundf10.eastmoney.com/',
+      'content-Type': 'application/json',
+    };
+    DateTime now = DateTime.now();
+    int milliseconds = now.millisecondsSinceEpoch;
+    Response response = await dio.get(
+      '/f10/lsjz?callback=&fundCode=${id}&pageIndex=1&pageSize=30&startDate=${startDate}&endDate=${endDate}&_=${milliseconds}',
+    );
     return response.data;
   }
 }

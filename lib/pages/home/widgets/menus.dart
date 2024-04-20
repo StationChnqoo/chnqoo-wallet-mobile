@@ -66,15 +66,19 @@ class HomeMenus extends StatelessWidget {
             children: [
               Flexible(
                   flex: 3,
-                  child: menuBuilder(context, '收益', '债券基金收益、排行',
-                      'assets/home_pig.png', () {})),
+                  child: menuBuilder(
+                      context, '收益', '债券基金收益、排行', 'assets/home_pig.png', () {
+                    Get.toNamed(RoutesClass.COMPARE);
+                  })),
               SizedBox(
                 width: 12,
               ),
               Flexible(
                   flex: 2,
                   child: menuBuilder(
-                      context, '设置', '个性化服务', 'assets/home_skin.png', () {}))
+                      context, '趋势', '基金组合对比', 'assets/home_rank.png', () {
+                    Get.toNamed(RoutesClass.COMPARE);
+                  }))
             ],
           )
         ],
