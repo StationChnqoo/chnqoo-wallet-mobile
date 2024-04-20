@@ -1,18 +1,13 @@
-import 'dart:developer';
-import 'dart:math';
-
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
-import 'package:chnqoo_wallet/constants/bond.dart';
 import 'package:chnqoo_wallet/constants/bond_compare.dart';
-import 'package:chnqoo_wallet/constants/bond_news.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/constants/x.dart';
+import 'package:chnqoo_wallet/pages/compare/widgets/list.dart';
+import 'package:chnqoo_wallet/pages/compare/widgets/time.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ComparePage extends StatefulWidget {
@@ -27,8 +22,48 @@ class ComparePageState extends State<ComparePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   GetStores stores = Get.find<GetStores>();
   List<BondCompare> datas = [];
-  DateTime startTime = DateTime.now();
-  DateTime endTime = DateTime.now();
+
+  List<DateTime> times = [DateTime.now(), DateTime.now()];
+  onTimePress(index) {
+    showDialog(
+        context: context,
+        builder: (BuildContext bc) => AlertDialog(
+              actionsPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12),
+              title: Text(
+                '请选择日期',
+                style: TextStyle(fontSize: 16),
+              ),
+              content: Container(
+                  // decoration: BoxDecoration(color: Colors.white),
+                  height: 198,
+                  child: CupertinoTheme(
+                    data: CupertinoThemeData(
+                      textTheme: CupertinoTextThemeData(
+                        dateTimePickerTextStyle: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    child: CupertinoDatePicker(
+                        initialDateTime: times[index],
+                        mode: CupertinoDatePickerMode.date,
+                        onDateTimeChanged: (DateTime date) {
+                          times[index] = date;
+                          setState(() {});
+                        }),
+                  )),
+              actions: [
+                TextButton(
+                  child: Text('确认'),
+                  onPressed: () {
+                    // 在这里处理确认按钮的点击事件
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,54 +85,20 @@ class ComparePageState extends State<ComparePage> {
             SizedBox(
               height: 12,
             ),
-            GestureDetector(
-              child: Text('选择日期'),
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext bc) => AlertDialog(
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 12),
-                          title: Text(
-                            '请选择日期',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          content: Container(
-                              // decoration: BoxDecoration(color: Colors.white),
-                              height: 198,
-                              child: CupertinoTheme(
-                                data: CupertinoThemeData(
-                                  textTheme: CupertinoTextThemeData(
-                                    dateTimePickerTextStyle: TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                                child: CupertinoDatePicker(
-                                    initialDateTime: startTime,
-                                    mode: CupertinoDatePickerMode.date,
-                                    onDateTimeChanged: (DateTime date) => {}),
-                              )),
-                          actions: [
-                            TextButton(
-                              style: ButtonStyle(
-                                  padding: MaterialStatePropertyAll(
-                                      EdgeInsets.zero)),
-                              child: Text('取消'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: Text('确认'),
-                              onPressed: () {
-                                // 在这里处理确认按钮的点击事件
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        ));
-              },
+            CompareTime(
+                onPress: onTimePress, startTime: times[0], endTime: times[1]),
+            CompareList(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                OutlinedButton.icon(onPressed: () {}, label: Text('恢复默认设置')),
+                FilledButton.icon(
+                    onPressed: () {
+                      print(
+                          'stores.compareFunds: ${stores.compareFunds.join(' ')}');
+                    },
+                    label: Text('开始科学分析 ...'))
+              ],
             )
           ],
         )),
@@ -105,19 +106,19 @@ class ComparePageState extends State<ComparePage> {
     );
   }
 
-  initGetStores() {}
+  initGetStores() {
+    ever(stores.compareFunds, (funds) {});
+  }
 
   initCompares() async {
-    var result =
-        await Services().selectBondPrice('002644', '2024-04-02', '2024-04-16');
+    var result = await Services().selectBondPrice(
+        '002644', x.formatDate(times[0]), x.formatDate(times[1]));
     var data = result['Data'] as Map<String, dynamic>;
     datas = data['LSJZList']
         .map<BondCompare>((json) => BondCompare.fromJson(json))
         .toList();
-    print('initCompares: ');
-    print(datas);
   }
-
+  
   @override
   void initState() {
     // TODO: implement initState

@@ -3,8 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyCard extends StatelessWidget {
   final Widget child;
+  final EdgeInsetsGeometry? padding;
 
-  MyCard({required this.child});
+  MyCard({required this.child, this.padding = const EdgeInsets.all(12)});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,8 @@ class MyCard extends StatelessWidget {
     //     ),
     //     elevation: 0.1);
     return Container(
-        padding: EdgeInsets.all(12),
+        // width: double.infinity,
+        padding: padding,
         decoration: BoxDecoration(
           color: Colors.white70,
           borderRadius: BorderRadius.circular(12),

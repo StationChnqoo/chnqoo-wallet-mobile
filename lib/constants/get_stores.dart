@@ -17,6 +17,7 @@ class GetStores extends GetxController {
   var user = User.fromJson(Mock().initUser()).obs;
   var bingWallPaper = BingWallPaper.fromJson(Mock().initBingWallPaper()).obs;
   var bondTables = <BondTable>[].obs;
+  var compareFunds = <String>[].obs;
 
   /** 系统变量 */
   /** 无需缓存，原则上是只能在Stores内部进行修改 */
@@ -41,6 +42,12 @@ class GetStores extends GetxController {
       bondTables.value =
           bondTablesCache.map<BondTable>((e) => BondTable.fromJson(e)).toList();
     }
+
+    var compareFundsCache =
+        (storage.read('compareFunds') as List).cast<String>();
+    if (compareFundsCache.isNotEmpty) {
+      compareFunds.value = compareFundsCache;
+    }
   }
 
   @override
@@ -48,6 +55,11 @@ class GetStores extends GetxController {
     // TODO: implement onInit
     super.onInit();
     // everAll([homePage, user, bingWallPaper, isSignIn], (callback) {});
+  }
+
+  void setCompareFunds(List<String> funds) {
+    compareFunds.value = funds;
+    storage.write('compareFunds', funds);
   }
 
   void setBingWallPaper(BingWallPaper bwp) {

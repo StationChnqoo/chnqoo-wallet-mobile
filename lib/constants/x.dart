@@ -199,6 +199,10 @@ class x {
     return DateFormat('yyyy-MM-dd').format(now);
   }
 
+  static formatDate(DateTime dt) {
+    return DateFormat('yyyy-MM-dd').format(dt);
+  }
+
   static toast(String title, String message) {
     Get.snackbar(
       '',
