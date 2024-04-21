@@ -39,7 +39,7 @@ class CompareTime extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 12),
       child: MyCard(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          padding: EdgeInsets.only (left: 12, right: 12, top: 0, bottom: 12),
           child: Column(
             children: [
               Row(
