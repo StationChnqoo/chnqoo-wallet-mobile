@@ -1,15 +1,17 @@
+import 'package:chnqoo_wallet/constants/fund_chart_dot.dart';
+
 class FundChartLine {
   String id;
-  List<double> datas;
+  List<FundChartDot> datas;
 
   FundChartLine({required this.id, required this.datas});
 
-  List<double> buildSumDatas() {
+  List<FundChartDot> buildSumDatas() {
     double sum = 0;
-    List<double> result = [];
+    List<FundChartDot> result = [];
     for (int i = 0; i < datas.length; i++) {
-      sum += datas[i];
-      result[i] = sum;
+      sum += datas[i].value;
+      result[i] = FundChartDot(name: i.toString(), value: sum);
     }
     return result;
   }

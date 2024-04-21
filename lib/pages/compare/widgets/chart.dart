@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:chnqoo_wallet/constants/fund_chart.dart';
+import 'package:chnqoo_wallet/constants/fund_chart_dot.dart';
 import 'package:chnqoo_wallet/constants/fund_chart_line.dart';
 import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:chnqoo_wallet/widgets/my_card.dart';
@@ -9,13 +9,14 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CompareChart extends StatelessWidget {
-  FundChart fc;
+  List<FundChartLine> lines;
 
-  CompareChart({required this.fc});
+  CompareChart({required this.lines});
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    print(lines);
     return Container(
       margin: EdgeInsets.only(bottom: 12),
       child: MyCard(
@@ -26,15 +27,11 @@ class CompareChart extends StatelessWidget {
                 primaryXAxis: NumericAxis(),
                 series: <CartesianSeries>[
                   // Renders line chart
-                  ...fc.yValues
-                      .asMap()
-                      .entries
-                      .map((e) => LineSeries<FundChart, int>(
-                          dataSource:e.value,
-                          xValueMapper: (FundChart fc, _) => sales.year,
-                          yValueMapper: (SalesData sales, _) =>
-                              Random().nextDouble() * 49))
-                      .toList()
+                  ...lines.asMap().entries.map((e) =>
+                      LineSeries<FundChartDot, num>(
+                          dataSource: e.value.datas,
+                          xValueMapper: (FundChartDot fd, _) => _,
+                          yValueMapper: (FundChartDot fd, _) => fd.value*100))
                 ]),
           )),
     );

@@ -91,7 +91,7 @@ class Services {
     DateTime now = DateTime.now();
     int milliseconds = now.millisecondsSinceEpoch;
     Response response = await dio.get(
-      '/f10/lsjz?callback=&fundCode=${id}&pageIndex=1&pageSize=30&startDate=${startDate}&endDate=${endDate}&_=${milliseconds}',
+      '/f10/lsjz?callback=&fundCode=${id}&pageIndex=1&pageSize=365&startDate=${startDate}&endDate=${endDate}&_=${milliseconds}',
     );
     return response.data;
   }

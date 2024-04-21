@@ -1,5 +1,7 @@
 import 'package:chnqoo_wallet/constants/bond_compare.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
+import 'package:chnqoo_wallet/constants/fund_chart_dot.dart';
+import 'package:chnqoo_wallet/constants/fund_chart_line.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/constants/x.dart';
@@ -23,8 +25,10 @@ class ComparePageState extends State<ComparePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   GetStores stores = Get.find<GetStores>();
   List<BondCompare> datas = [];
+  List<FundChartLine> lines = [];
 
   List<DateTime> times = [DateTime.now(), DateTime.now()];
+
   onTimePress(index) {
     showDialog(
         context: context,
@@ -89,15 +93,22 @@ class ComparePageState extends State<ComparePage> {
             CompareTime(
                 onPress: onTimePress, startTime: times[0], endTime: times[1]),
             CompareList(),
-            CompareChart(),
+            CompareChart(
+              lines: lines,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                OutlinedButton.icon(onPressed: () {}, label: Text('恢复默认设置')),
+                OutlinedButton.icon(
+                    icon: Icon(Icons.settings),
+                    onPressed: () {},
+                    label: Text('恢复默认设置')),
                 FilledButton.icon(
+                    icon: Icon(Icons.analytics),
                     onPressed: () {
                       print(
                           'stores.compareFunds: ${stores.compareFunds.join(' ')}');
+                      fundChartLineBuilder();
                     },
                     label: Text('开始科学分析 ...'))
               ],
@@ -112,13 +123,34 @@ class ComparePageState extends State<ComparePage> {
     ever(stores.compareFunds, (funds) {});
   }
 
-  initCompares() async {
-    var result = await Services().selectBondPrice(
-        '002644', x.formatDate(times[0]), x.formatDate(times[1]));
-    var data = result['Data'] as Map<String, dynamic>;
-    datas = data['LSJZList']
-        .map<BondCompare>((json) => BondCompare.fromJson(json))
-        .toList();
+  initCompares() async {}
+
+  List<FundChartDot> buildSumDots(
+    List<BondCompare> compares,
+  ) {
+    List<FundChartDot> dots = [];
+    double sum = 0;
+    for (int i = 0; i < compares.length; i++) {
+      sum += double.parse(compares[i].JZZZL);
+      dots.add(FundChartDot(name: compares[i].FSRQ, value: sum));
+    }
+    return dots;
+  }
+
+  fundChartLineBuilder() async {
+    var _lines = [];
+    for (int i = 0; i < stores.compareFunds.length; i++) {
+      String code = stores.compareFunds[i];
+      var result = await Services().selectBondPrice(
+          code, x.formatDate(times[0]), x.formatDate(times[1]));
+      var data = result['Data'] as Map<String, dynamic>;
+      var dots = data['LSJZList']
+          .map<BondCompare>((json) => BondCompare.fromJson(json))
+          .toList();
+      _lines.add(FundChartLine(id: code, datas: buildSumDots(dots)));
+      lines = [..._lines];
+      setState(() {});
+    }
   }
 
   @override

@@ -43,10 +43,9 @@ class GetStores extends GetxController {
           bondTablesCache.map<BondTable>((e) => BondTable.fromJson(e)).toList();
     }
 
-    var compareFundsCache =
-        (storage.read('compareFunds') as List).cast<String>();
-    if (compareFundsCache.isNotEmpty) {
-      compareFunds.value = compareFundsCache;
+    var compareFundsCache = storage.read('compareFunds');
+    if (compareFundsCache != null) {
+      compareFunds.value = (compareFundsCache as List).cast<String>();
     }
   }
 
