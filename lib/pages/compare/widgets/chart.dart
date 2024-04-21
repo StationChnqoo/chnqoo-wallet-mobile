@@ -26,6 +26,13 @@ class CompareChart extends StatelessWidget {
                 '基金走势',
                 style: TextStyle(fontSize: 16, color: Colors.black87),
               ),
+              SizedBox(
+                height: 2,
+              ),
+              Text(
+                '纵轴/百分比 横轴/天数',
+                style: TextStyle(fontSize: 12, color: Colors.black54),
+              ),
               Container(
                 height: MediaQuery.of(context).size.width * 0.618,
                 child: SfCartesianChart(
@@ -37,8 +44,7 @@ class CompareChart extends StatelessWidget {
                               color: e.value.color,
                               dataSource: e.value.datas,
                               xValueMapper: (FundChartDot fd, _) => _,
-                              yValueMapper: (FundChartDot fd, _) =>
-                                  fd.value))
+                              yValueMapper: (FundChartDot fd, _) => fd.value))
                     ]),
               )
             ],

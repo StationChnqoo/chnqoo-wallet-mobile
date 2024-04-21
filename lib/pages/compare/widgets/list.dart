@@ -1,8 +1,8 @@
 import 'package:chnqoo_wallet/constants/fund_chart_line.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
+import 'package:chnqoo_wallet/routes/routes.dart';
 import 'package:chnqoo_wallet/widgets/my_title_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class CompareList extends StatelessWidget {
@@ -103,11 +103,11 @@ class CompareList extends StatelessWidget {
                                             stores.setCompareFunds(_datas);
                                           },
                                           icon: Icon(
-                                            Icons.delete,
+                                            Icons.delete_outline,
                                             size: 18,
-                                            color: Colors.red,
+                                  
                                           )),
-                                    )
+                                    ),
                                   ],
                                 ));
                           }),
@@ -137,7 +137,17 @@ class CompareList extends StatelessWidget {
                     stores.setCompareFunds(_datas);
                     tec.text = "";
                   },
-                  icon: Icon(Icons.add))
+                  icon: Icon(Icons.add)),
+              IconButton.outlined(
+                padding: EdgeInsets.zero,
+                style: ButtonStyle(),
+                onPressed: () {
+                  Get.toNamed(RoutesClass.IMPORT_FUND);
+                },
+                icon: Icon(
+                  Icons.copy,
+                ),
+              )
             ],
           )
         ],

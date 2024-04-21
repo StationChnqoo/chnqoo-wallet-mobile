@@ -135,7 +135,7 @@ class ComparePageState extends State<ComparePage> {
                   OutlinedButton.icon(
                       icon: Icon(Icons.settings),
                       onPressed: () {},
-                      label: Text('恢复默认设置')),
+                      label: Text('设置')),
                   FilledButton.icon(
                       icon: Icon(Icons.analytics),
                       onPressed: () {
@@ -143,7 +143,7 @@ class ComparePageState extends State<ComparePage> {
                             'stores.compareFunds: ${stores.compareFunds.join(' ')}');
                         fundChartLineBuilder();
                       },
-                      label: Text('开始科学分析'))
+                      label: Text('科学分析'))
                 ],
               ),
             )

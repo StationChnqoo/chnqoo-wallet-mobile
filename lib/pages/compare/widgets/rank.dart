@@ -7,19 +7,20 @@ class CompareRank extends StatelessWidget {
 
   CompareRank({required this.index, required this.lines});
 
+  int SIZE = 5;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     List<FundChartLine> findSortedFunds() {
-      if (lines.length < 3) {
+      if (lines.length < SIZE) {
         return [];
       } else {
         var _lines = [...lines];
         _lines.sort((a, b) =>
             (b.datas.last.value * 100 - a.datas.last.value * 100).toInt());
-        List<FundChartLine> top3 = _lines.sublist(0, 3);
+        List<FundChartLine> top3 = _lines.sublist(0, SIZE);
         List<FundChartLine> last3 =
-            _lines.sublist(_lines.length - 3, _lines.length);
+            _lines.sublist(_lines.length - SIZE, _lines.length);
         return [top3, last3][index];
       }
     }
@@ -43,9 +44,11 @@ class CompareRank extends StatelessWidget {
                   width: 6,
                 ),
                 Text(
-                  ['神鸡🐦排名前3', '瘟鸡🐦排名后3'][index],
+                  ['排名前${SIZE}神鸡🐤', '排名后${SIZE}瘟鸡🐤'][index],
                   style: TextStyle(
-                      fontSize: 16, color: [Colors.red, Colors.green][index]),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: [Colors.red, Colors.green][index]),
                 ),
               ],
             ),

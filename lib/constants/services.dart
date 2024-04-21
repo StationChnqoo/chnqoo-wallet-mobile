@@ -53,10 +53,10 @@ class Services {
     dio.interceptors.add(CurlBuilder());
   }
 
-  selectBingWallPaper() async {
-    var result = await Dio().get(
-        'https://mouday.github.io/wallpaper-database/${x.usePreviousDay(1)}.json');
-    return result;
+  selectBingWallPaper(int days) async {
+    Response response = await Dio().get(
+        'https://mouday.github.io/wallpaper-database/${x.usePreviousDay(days)}.json');
+    return response.data;
   }
 
   selectEastMoneyBonds() async {
