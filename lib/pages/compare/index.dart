@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chnqoo_wallet/constants/bond_compare.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/fund_chart_dot.dart';
@@ -26,7 +28,7 @@ class ComparePageState extends State<ComparePage> {
   GetStores stores = Get.find<GetStores>();
   List<BondCompare> datas = [];
   List<FundChartLine> lines = [];
-
+  List<String> names = [];
   List<DateTime> times = [DateTime.now(), DateTime.now()];
 
   onTimePress(index) {
@@ -92,7 +94,9 @@ class ComparePageState extends State<ComparePage> {
             ),
             CompareTime(
                 onPress: onTimePress, startTime: times[0], endTime: times[1]),
-            CompareList(),
+            CompareList(
+              lines: lines,
+            ),
             CompareChart(
               lines: lines,
             ),
@@ -156,12 +160,16 @@ class ComparePageState extends State<ComparePage> {
       var dots = data['LSJZList']
           .map<BondCompare>((json) => BondCompare.fromJson(json))
           .toList();
-      _lines.add(FundChartLine(id: code, datas: buildSumDots(dots)));
+      _lines.add(FundChartLine(
+          id: code,
+          name: await Services().queryFundName(code),
+          color: x.useRandomColor(),
+          datas: buildSumDots(dots)));
       lines = [..._lines];
       setState(() {});
     }
   }
-
+  
   @override
   void initState() {
     // TODO: implement initState

@@ -1,11 +1,7 @@
-import 'dart:math';
-
 import 'package:chnqoo_wallet/constants/fund_chart_dot.dart';
 import 'package:chnqoo_wallet/constants/fund_chart_line.dart';
-import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:chnqoo_wallet/widgets/my_card.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CompareChart extends StatelessWidget {
@@ -29,9 +25,10 @@ class CompareChart extends StatelessWidget {
                   // Renders line chart
                   ...lines.asMap().entries.map((e) =>
                       LineSeries<FundChartDot, num>(
+                          color: e.value.color,
                           dataSource: e.value.datas,
                           xValueMapper: (FundChartDot fd, _) => _,
-                          yValueMapper: (FundChartDot fd, _) => fd.value*100))
+                          yValueMapper: (FundChartDot fd, _) => fd.value * 100))
                 ]),
           )),
     );

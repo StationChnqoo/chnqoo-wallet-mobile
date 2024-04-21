@@ -1,3 +1,4 @@
+import 'package:chnqoo_wallet/constants/fund_chart_line.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/widgets/my_title_card.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +8,23 @@ import 'package:get/get.dart';
 class CompareList extends StatelessWidget {
   GetStores stores = Get.find<GetStores>();
   TextEditingController tec = TextEditingController();
+  List<FundChartLine> lines = [];
+
+  CompareList({required this.lines});
+
+  int findFund(String id) {
+    for (int i = 0; i < lines.length; i++) {
+      if (lines[i].id == id) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     return Container(
       margin: EdgeInsets.only(bottom: 12),
       child: Column(
@@ -25,44 +39,70 @@ class CompareList extends StatelessWidget {
                           SizedBox(
                             height: 6,
                           ),
-                          ...stores.compareFunds
-                              .asMap()
-                              .entries
-                              .map((e) => Container(
-                                  width: double.infinity,
-                                  // margin: EdgeInsets.only(bottom: 12),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
+                          ...stores.compareFunds.asMap().entries.map((e) {
+                            int index = findFund(e.value);
+                            return Container(
+                                width: double.infinity,
+                                // margin: EdgeInsets.only(bottom: 12),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
                                         padding:
                                             EdgeInsets.symmetric(vertical: 6),
-                                        child: Text(
-                                          e.value,
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 28,
-                                        width: 28,
-                                        child: IconButton.outlined(
-                                            padding: EdgeInsets.zero,
-                                            style: ButtonStyle(),
-                                            onPressed: () {
-                                              var _datas = [
-                                                ...stores.compareFunds
-                                              ];
-                                              _datas.removeAt(e.key);
-                                              stores.setCompareFunds(_datas);
-                                            },
-                                            icon: Icon(
-                                              Icons.delete,
-                                              size: 18,
-                                            )),
-                                      )
-                                    ],
-                                  ))),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height: 16,
+                                              width: 16,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    8,
+                                                  ),
+                                                  color: index == -1
+                                                      ? Colors.black54
+                                                      : lines[index].color),
+                                            ),
+                                            SizedBox(
+                                              width: 12,
+                                            ),
+                                            Text(
+                                              e.value,
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                            Text(
+                                              index == -1
+                                                  ? ''
+                                                  : ' · ${lines[index].name}',
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 14),
+                                            )
+                                          ],
+                                        )),
+                                    SizedBox(
+                                      height: 28,
+                                      width: 28,
+                                      child: IconButton.outlined(
+                                          padding: EdgeInsets.zero,
+                                          style: ButtonStyle(),
+                                          onPressed: () {
+                                            var _datas = [
+                                              ...stores.compareFunds
+                                            ];
+                                            _datas.removeAt(e.key);
+                                            stores.setCompareFunds(_datas);
+                                          },
+                                          icon: Icon(
+                                            Icons.delete,
+                                            size: 18,
+                                          )),
+                                    )
+                                  ],
+                                ));
+                          }),
                         ],
                       )),
                 )

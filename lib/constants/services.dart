@@ -1,5 +1,6 @@
 import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:dio/dio.dart';
+import 'package:beautiful_soup_dart/beautiful_soup.dart';
 
 // Dio在原有返回的结构上包了一层data -> {data: {success: bool, data: map}}
 
@@ -94,5 +95,14 @@ class Services {
       '/f10/lsjz?callback=&fundCode=${id}&pageIndex=1&pageSize=365&startDate=${startDate}&endDate=${endDate}&_=${milliseconds}',
     );
     return response.data;
+  }
+
+  queryFundName(String code) async {
+    dio.options.baseUrl = 'https://fund.eastmoney.com';
+    Response response = await dio.get('/${code}.html');
+    var data = response.data;
+    BeautifulSoup bs = BeautifulSoup(data.toString());
+    var span = bs.find('span', class_: 'funCur-FundName');
+    return span?.text ?? '';
   }
 }
