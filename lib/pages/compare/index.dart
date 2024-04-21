@@ -30,6 +30,22 @@ class ComparePageState extends State<ComparePage> {
   List<FundChartLine> lines = [];
   List<String> names = [];
   List<DateTime> times = [DateTime.now(), DateTime.now()];
+  int tab = 0;
+
+  onTabPress(int index) {
+    tab = index;
+    if (index != 4) {
+      List<Duration> oldTimes = [
+        Duration(days: 30),
+        Duration(days: 90),
+        Duration(days: 180),
+        Duration(days: 360)
+      ];
+      times[0] = DateTime.now().subtract(oldTimes[index]);
+    }
+
+    setState(() {});
+  }
 
   onTimePress(index) {
     showDialog(
@@ -93,7 +109,12 @@ class ComparePageState extends State<ComparePage> {
               height: 12,
             ),
             CompareTime(
-                onPress: onTimePress, startTime: times[0], endTime: times[1]),
+              onPress: onTimePress,
+              startTime: times[0],
+              endTime: times[1],
+              tab: tab,
+              onTabPress: onTabPress,
+            ),
             CompareList(
               lines: lines,
             ),
@@ -169,12 +190,13 @@ class ComparePageState extends State<ComparePage> {
       setState(() {});
     }
   }
-  
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initCompares();
     initGetStores();
+    onTabPress(0);
   }
 }

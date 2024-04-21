@@ -98,6 +98,7 @@ class CompareList extends StatelessWidget {
                                           icon: Icon(
                                             Icons.delete,
                                             size: 18,
+                                            color: Colors.red,
                                           )),
                                     )
                                   ],
