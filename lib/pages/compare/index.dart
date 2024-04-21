@@ -9,6 +9,7 @@ import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:chnqoo_wallet/pages/compare/widgets/chart.dart';
 import 'package:chnqoo_wallet/pages/compare/widgets/list.dart';
+import 'package:chnqoo_wallet/pages/compare/widgets/rank.dart';
 import 'package:chnqoo_wallet/pages/compare/widgets/time.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
@@ -121,6 +122,11 @@ class ComparePageState extends State<ComparePage> {
             CompareChart(
               lines: lines,
             ),
+            CompareRank(
+              index: 0,
+              lines: lines,
+            ),
+            CompareRank(index: 1, lines: lines),
             Container(
               margin: EdgeInsets.only(bottom: 24),
               child: Row(
@@ -137,7 +143,7 @@ class ComparePageState extends State<ComparePage> {
                             'stores.compareFunds: ${stores.compareFunds.join(' ')}');
                         fundChartLineBuilder();
                       },
-                      label: Text('开始科学分析 ...'))
+                      label: Text('开始科学分析'))
                 ],
               ),
             )
