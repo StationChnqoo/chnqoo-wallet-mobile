@@ -72,16 +72,23 @@ class CompareList extends StatelessWidget {
                                               e.value,
                                               style: TextStyle(fontSize: 16),
                                             ),
-                                            Text(
-                                              index == -1
-                                                  ? ''
-                                                  : ' · ${lines[index].name}',
-                                              style: TextStyle(
-                                                  color: Colors.black54,
-                                                  fontSize: 14),
-                                            )
                                           ],
                                         )),
+                                    Flexible(
+                                        fit: FlexFit.tight,
+                                        child: Text(
+                                          maxLines: 1,
+                                          index == -1
+                                              ? ''
+                                              : ' · ${lines[index].name}',
+                                          style: TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                              color: Colors.black54,
+                                              fontSize: 14),
+                                        )),
+                                    SizedBox(
+                                      width: 12,
+                                    ),
                                     SizedBox(
                                       height: 28,
                                       width: 28,

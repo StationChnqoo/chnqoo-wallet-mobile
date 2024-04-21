@@ -121,23 +121,26 @@ class ComparePageState extends State<ComparePage> {
             CompareChart(
               lines: lines,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                OutlinedButton.icon(
-                    icon: Icon(Icons.settings),
-                    onPressed: () {},
-                    label: Text('恢复默认设置')),
-                FilledButton.icon(
-                    icon: Icon(Icons.analytics),
-                    onPressed: () {
-                      print(
-                          'stores.compareFunds: ${stores.compareFunds.join(' ')}');
-                      fundChartLineBuilder();
-                    },
-                    label: Text('开始科学分析 ...'))
-              ],
-            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  OutlinedButton.icon(
+                      icon: Icon(Icons.settings),
+                      onPressed: () {},
+                      label: Text('恢复默认设置')),
+                  FilledButton.icon(
+                      icon: Icon(Icons.analytics),
+                      onPressed: () {
+                        print(
+                            'stores.compareFunds: ${stores.compareFunds.join(' ')}');
+                        fundChartLineBuilder();
+                      },
+                      label: Text('开始科学分析 ...'))
+                ],
+              ),
+            )
           ],
         )),
       ),
