@@ -130,7 +130,16 @@ class ComparePageState extends State<ComparePage> {
   ) {
     List<FundChartDot> dots = [];
     double sum = 0;
+    List<BondCompare> _compares = [];
+
     for (int i = 0; i < compares.length; i++) {
+      DateTime date = DateTime.parse(compares[i].FSRQ);
+      if (date.isAfter(times[0].subtract(Duration(days: 1))) &&
+          date.isBefore(times[1].add(Duration(days: 1)))) {}
+      _compares.add(compares[i]);
+    }
+    _compares = [..._compares].reversed.toList();
+    for (int i = 0; i < _compares.length; i++) {
       sum += double.parse(compares[i].JZZZL);
       dots.add(FundChartDot(name: compares[i].FSRQ, value: sum));
     }
