@@ -125,8 +125,13 @@ class ComparePageState extends State<ComparePage> {
             CompareRank(
               index: 0,
               lines: lines,
+              times: times,
             ),
-            CompareRank(index: 1, lines: lines),
+            CompareRank(
+              index: 1,
+              lines: lines,
+              times: times,
+            ),
             Container(
               margin: EdgeInsets.only(bottom: 24),
               child: Row(

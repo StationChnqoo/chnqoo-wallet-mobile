@@ -1,11 +1,13 @@
 import 'package:chnqoo_wallet/constants/fund_chart_line.dart';
+import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:flutter/material.dart';
 
 class CompareRank extends StatelessWidget {
   final int index;
   final List<FundChartLine> lines;
+  final List<DateTime> times;
 
-  CompareRank({required this.index, required this.lines});
+  CompareRank({required this.index, required this.lines, required this.times});
 
   int SIZE = 5;
   @override
@@ -34,22 +36,31 @@ class CompareRank extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(
-                  ['assets/wechat_666.png', 'assets/wechat_3q.png'][index],
-                  height: 24,
-                  width: 24,
-                ),
-                SizedBox(
-                  width: 6,
+                Row(
+                  children: [
+                    Image.asset(
+                      ['assets/wechat_666.png', 'assets/wechat_3q.png'][index],
+                      height: 24,
+                      width: 24,
+                    ),
+                    SizedBox(
+                      width: 6,
+                    ),
+                    Text(
+                      ['排名前${SIZE}神鸡🐤', '排名后${SIZE}瘟鸡🐤'][index],
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: [Colors.red, Colors.green][index]),
+                    ),
+                  ],
                 ),
                 Text(
-                  ['排名前${SIZE}神鸡🐤', '排名后${SIZE}瘟鸡🐤'][index],
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: [Colors.red, Colors.green][index]),
-                ),
+                  '${x.formatDate(times[0])} ~ ${x.formatDate(times[1])}',
+                  style: TextStyle(color: Colors.black54, fontSize: 10),
+                )
               ],
             ),
             ...findSortedFunds().asMap().entries.map((e) => Container(
