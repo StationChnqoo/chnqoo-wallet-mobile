@@ -59,7 +59,7 @@ class CompareRank extends StatelessWidget {
                 ),
                 Text(
                   '${x.formatDate(times[0])} ~ ${x.formatDate(times[1])}',
-                  style: TextStyle(color: Colors.black54, fontSize: 10),
+                  style: TextStyle(color: Colors.black54, fontSize: 12),
                 )
               ],
             ),

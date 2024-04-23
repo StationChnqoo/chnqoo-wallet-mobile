@@ -7,11 +7,13 @@ import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/constants/x.dart';
+import 'package:chnqoo_wallet/pages/creator/widgets/thanks.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 
 class CreatorPage extends StatefulWidget {
   const CreatorPage({super.key});
@@ -26,6 +28,7 @@ class CreatorPageState extends State<CreatorPage> {
   GetStores stores = Get.find<GetStores>();
   List<Bond> bonds = [];
   List<BondNews> news = [];
+  List<CopyMessage> messages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -47,31 +50,44 @@ class CreatorPageState extends State<CreatorPage> {
             SizedBox(
               height: 12,
             ),
-            Text(buildString()),
+            CreatorThanks(),
             SizedBox(
               height: 12,
             ),
+            ...messages.asMap().entries.map((e) => Container(
+                  margin: EdgeInsets.only(bottom: 12),
+                  child: GestureDetector(
+                    onTap: () {
+                      e.value.checked = !e.value.checked;
+                      setState(() {});
+                    },
+                    child: Card.outlined(
+                      margin: EdgeInsets.zero,
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          children: [
+                            Checkbox(
+                                value: e.value.checked, onChanged: (value) {}),
+                            Flexible(
+                                child: Text(
+                              e.value.value,
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.black87),
+                            ))
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                )),
             Container(
               margin: EdgeInsets.only(bottom: 12),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(),
-                  Row(
-                    children: [
-                      OutlinedButton(onPressed: () {}, child: Text('参数设置')),
-                      SizedBox(
-                        width: 24,
-                      ),
-                      FilledButton(
-                          onPressed: () {
-                            Clipboard.setData(
-                                ClipboardData(text: buildString()));
-                          },
-                          child: Text('复制 '))
-                    ],
-                  )
+                  FilledButton(onPressed: onCopyPress, child: Text('复制 '))
                 ],
+                mainAxisAlignment: MainAxisAlignment.end,
               ),
             )
           ],
@@ -80,29 +96,36 @@ class CreatorPageState extends State<CreatorPage> {
     );
   }
 
-  buildString() {
-    String result = '';
-    List<String> head = [
-      '家人们，专业播报还是得交给专业的人，我花了一个星期的时间做了个程序，每天不定时为大家播报最新债券行情和咨询。',
-      '创作不易，家人们点点关注点点赞。',
-      '您的支持就是我创作的最大动力，ღ( ´･ᴗ･` )比心。'
-    ];
+  onCopyPress() {
+    String result = messages
+        .where((element) => element.checked)
+        .map((e) => e.value)
+        .join('\n\n');
+    Clipboard.setData(ClipboardData(text: result));
+    x.toast('复制成功', '${(result.length / 1024).toStringAsFixed(2)}KB');
+  }
+
+  messageBuilder() {
     String bondString = '债券行情\n';
     for (int i = 0; i < bonds.length; i++) {
       Bond bond = bonds[i];
       bondString +=
           '${bond.f12}/${bond.f14} ${bond.f3 is String ? bond.f3 : bond.f3 > 0 ? '涨${bond.f3}%' : '跌${bond.f3}%'} 成交量：${x.toText(bond.f5)} 成交额：${x.toText(bond.f6)}\n';
     }
-    String newsString = '债券资讯\n';
-    for (int i = 0; i < min(5, news.length); i++) {
+    messages.add(CopyMessage(checked: true, value: bondString.trim()));
+    for (int i = 0; i < min(10, news.length); i++) {
       BondNews bn = news[i];
-      newsString += '${bn.time}\n${bn.title}\n\n${bn.detail}\n\n';
+      messages.add(CopyMessage(
+          checked: true, value: '${bn.time}\n${bn.title}\n\n${bn.detail}'));
     }
-    result = [head.join('\n'), '', bondString, newsString].join('\n').trim();
-    return result;
+    setState(() {});
   }
 
-  initGetStores() {}
+  initGetStores() async {
+    await initDatas();
+    await initNews();
+    messageBuilder();
+  }
 
   initDatas() async {
     var result = await Services().selectEastMoneyBonds();
@@ -135,7 +158,11 @@ class CreatorPageState extends State<CreatorPage> {
     // TODO: implement initState
     super.initState();
     initGetStores();
-    initDatas();
-    initNews();
   }
+}
+
+class CopyMessage {
+  bool checked;
+  String value;
+  CopyMessage({required this.checked, required this.value});
 }

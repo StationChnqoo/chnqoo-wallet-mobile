@@ -84,7 +84,6 @@ class Services {
   selectBondPrice(String id, String startDate, String endDate) async {
     dio.options.baseUrl = 'https://api.fund.eastmoney.com';
     dio.options.headers = {
-      // 在这里添加你想要的headers
       'host': 'api.fund.eastmoney.com',
       'referer': 'https://fundf10.eastmoney.com/',
       'content-Type': 'application/json',
