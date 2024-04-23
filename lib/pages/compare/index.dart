@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:chnqoo_wallet/constants/bond_compare.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/fund_chart_dot.dart';
