@@ -3,29 +3,18 @@ class Mock {
 
   Mock() {}
 
+  List<num> filler(int i) => List.filled(i, 0);
   dynamic initBondTables() {
     return [
       {
         "title": "利率债",
         "weather": 1,
-        "columns": ['', '1Y', '2Y', '3Y', '5Y', '7Y', '10Y', '10Y+'],
+        "columns": ['', '1Y', '3Y', '5Y', '7Y', '10Y', '10Y+'],
         "rows": [
-          {
-            "name": "国债",
-            "value": [-1, -1, 1, 1, 1, 1, 1]
-          },
-          {
-            "name": "国开",
-            "value": [-1, -1, 1, 1, 0, 1, 1]
-          },
-          {
-            "name": "非国开",
-            "value": [-1, -1, 0, 1, -1, 1, 1]
-          },
-          {
-            "name": "地方债",
-            "value": [-1, 1, 0, -1, 0, 1, -1]
-          },
+          {"name": "国债", "value": filler(6)},
+          {"name": "国开", "value": filler(6)},
+          {"name": "非国开", "value": filler(6)},
+          {"name": "地方债", "value": filler(6)},
         ]
       },
       {
@@ -33,22 +22,10 @@ class Mock {
         "weather": 2,
         "columns": ['', '1M', '3M', '6M', '1Y', '3Y', '5Y', '7Y'],
         "rows": [
-          {
-            "name": "AAA+",
-            "value": [-1, -1, 1, 1, 1, 1, 1]
-          },
-          {
-            "name": "AAA",
-            "value": [-1, -1, 1, 1, 1, 1, 1]
-          },
-          {
-            "name": "AA+",
-            "value": [-1, -1, 1, 1, 0, 1, 1]
-          },
-          {
-            "name": "AA",
-            "value": [-1, 1, 0, -1, 0, 1, -1]
-          },
+          {"name": "AAA+", "value": filler(7)},
+          {"name": "AAA", "value": filler(7)},
+          {"name": "AA+", "value": filler(7)},
+          {"name": "AA", "value": filler(7)},
         ]
       },
       // {
