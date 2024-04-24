@@ -118,7 +118,7 @@ class Services {
       'referer': 'https://fund.eastmoney.com/data/fundranking.html'
     };
     DateTime date = DateTime.now();
-    if (date.hour < 9) {
+    if (date.hour < 15) {
       date = date.subtract(Duration(days: 1));
     }
     String today = DateFormat('yyyy-MM-dd').format(date);

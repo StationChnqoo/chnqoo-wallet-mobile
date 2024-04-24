@@ -28,7 +28,8 @@ class FundToday {
         name: list[1],
         abcd: list[2],
         value: _parseDouble(list[6]),
-        values:
-            [list[7], list[8], list[9]].map((e) => _parseDynamic(e)).toList());
+        values: [list[7], list[8], list[9], list[10], list[11]]
+            .map((e) => _parseDynamic(e))
+            .toList());
   }
 }
