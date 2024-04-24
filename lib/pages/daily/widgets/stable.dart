@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 
 class DailyStable extends StatefulWidget {
   List<FundToday> list;
-  DailyStable({required this.list});
+  int dateTab;
+  final onDateTabPress;
+  DailyStable(
+      {required this.list,
+      required this.dateTab,
+      required this.onDateTabPress});
 
   @override
   State<StatefulWidget> createState() => DailyStableState();
@@ -14,8 +19,39 @@ class DailyStableState extends State<DailyStable> {
   int usefulCount = 0;
   int count = 0;
   List<FundToday> datas = [];
+  List<Slide> slides = [
+    Slide(name: '近3个月', value: 1),
+    Slide(name: '近半年', value: 4),
+    Slide(name: '近一年', value: 7)
+  ];
 
-  void dataFilter() {}
+  tagBuilder(BuildContext context, int index) {
+    Color color = index == widget.dateTab
+        ? Theme.of(context).primaryColor
+        : Colors.black54;
+    return GestureDetector(
+      onTap: () {
+        widget.onDateTabPress(index);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(color: color)),
+        child: Text(
+          [
+            '昨天',
+            '今天',
+          ][index],
+          style: TextStyle(
+            fontSize: 12,
+            color: color,
+          ),
+          // strutStyle: StrutStyle.fromTextStyle(),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +95,7 @@ class DailyStableState extends State<DailyStable> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '近3个月 > 1%、近半年 > 4%、近一年 > 6%',
+                      '近3个月 > ${slides[0].value}%、近半年 > ${slides[1].value}%、近一年 > ${slides[2].value}%',
                       style: TextStyle(color: Colors.black87, fontSize: 12),
                     ),
                     Text(
@@ -71,6 +107,63 @@ class DailyStableState extends State<DailyStable> {
                     )
                   ],
                 ),
+                Column(
+                  children: [
+                    ...slides.asMap().entries.map((e) => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              e.value.name,
+                              style: TextStyle(
+                                  color: Colors.black54, fontSize: 14),
+                            ),
+                            SliderTheme(
+                              data: SliderTheme.of(context).copyWith(
+                                thumbShape: RoundSliderThumbShape(
+                                    enabledThumbRadius: 8.0), // 自定义滑块形状
+                                overlayShape: RoundSliderOverlayShape(
+                                    overlayRadius: 12.0), // 自定义滑块覆盖层形状
+                              ),
+                              child: Slider(
+                                  min: 0,
+                                  max: 20,
+                                  label: e.value.value.toString(),
+                                  value: e.value.value.toDouble(),
+                                  onChanged: (value) {
+                                    var _slides = [...slides];
+                                    _slides[e.key].value = value.toInt();
+                                    setState(() {});
+                                    Future.delayed(Duration(milliseconds: 1),
+                                        () {
+                                      datasUpdater();
+                                    });
+                                  }),
+                            )
+                          ],
+                        )),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '时间',
+                          style: TextStyle(color: Colors.black87, fontSize: 14),
+                        ),
+                        Row(
+                          children: [
+                            tagBuilder(context, 0),
+                            SizedBox(
+                              width: 12,
+                            ),
+                            tagBuilder(context, 1)
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                )
               ],
             ),
           ),
@@ -83,10 +176,7 @@ class DailyStableState extends State<DailyStable> {
     );
   }
 
-  @override
-  void didUpdateWidget(covariant DailyStable oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
+  datasUpdater() {
     count = widget.list.length;
     List<FundToday> _list = [...widget.list];
     _list = _list
@@ -95,11 +185,24 @@ class DailyStableState extends State<DailyStable> {
     usefulCount = _list.length;
     _list = _list
         .where((element) =>
-            element.values[2] > 1 &&
-            element.values[3] > 3 &&
-            element.values[4] > 6)
+            element.values[2] > slides[0].value &&
+            element.values[3] > slides[1].value &&
+            element.values[4] > slides[2].value)
         .toList();
     datas = [..._list];
     setState(() {});
   }
+
+  @override
+  void didUpdateWidget(covariant DailyStable oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    datasUpdater();
+  }
+}
+
+class Slide {
+  String name;
+  int value;
+  Slide({required this.name, required this.value});
 }

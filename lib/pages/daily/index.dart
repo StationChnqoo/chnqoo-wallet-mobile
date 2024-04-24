@@ -8,6 +8,7 @@ import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class DailyPage extends StatefulWidget {
   const DailyPage({super.key});
@@ -21,6 +22,7 @@ class DailyPageState extends State<DailyPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   GetStores stores = Get.find<GetStores>();
   List<FundToday> list = [];
+  int dateTab = 1;
 
   _toString(dynamic s) {
     return s is num ? '${s.toStringAsFixed(2)}%' : s;
@@ -57,7 +59,7 @@ class DailyPageState extends State<DailyPage> {
       key: scaffoldKey,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
-        child: MyToolBar(title: '当日收益排行', onBackPress: () => Get.back()),
+        child: MyToolBar(title: '收益排行', onBackPress: () => Get.back()),
       ),
       body: Container(
         height: double.infinity,
@@ -69,7 +71,17 @@ class DailyPageState extends State<DailyPage> {
             itemCount: list.length + 1,
             itemBuilder: (context, index) {
               if (index == 0) {
-                return DailyStable(list: list);
+                return DailyStable(
+                  list: list,
+                  dateTab: dateTab,
+                  onDateTabPress: (index) {
+                    dateTab = index;
+                    setState(() {});
+                    Future.delayed(Duration(microseconds: 1), () {
+                      initDatas();
+                    });
+                  },
+                );
               } else {
                 FundToday ft = list[index - 1];
                 return DailyItem(ft: ft);
@@ -84,7 +96,11 @@ class DailyPageState extends State<DailyPage> {
   initDatas() async {
     int start = DateTime.now().millisecondsSinceEpoch;
     List<FundToday> _list = [];
-    var result = await Services().queryTodayBonds();
+    var result = await Services().queryTodayBonds(DateFormat('yyyy-MM-dd')
+        .format([
+      DateTime.now(),
+      DateTime.now().subtract(Duration(days: 1))
+    ][dateTab]));
     for (int i = 0; i < result.length; i++) {
       _list.add(FundToday.fromJson(result[i] as String));
     }

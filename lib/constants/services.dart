@@ -108,7 +108,7 @@ class Services {
     return span?.text ?? '';
   }
 
-  queryTodayBonds() async {
+  queryTodayBonds(String date) async {
     // https://fund.eastmoney.com
     // https://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=zq&rs=&gs=0&sc=1nzf&st=asc&sd=2023-04-23&ed=2024-04-23&qdii=|&tabSubtype=,,,,,&pi=1&pn=10000&dx=1
     int start = DateTime.now().millisecondsSinceEpoch;
@@ -117,13 +117,8 @@ class Services {
     dio.options.headers = {
       'referer': 'https://fund.eastmoney.com/data/fundranking.html'
     };
-    DateTime date = DateTime.now();
-    if (date.hour < 15) {
-      date = date.subtract(Duration(days: 1));
-    }
-    String today = DateFormat('yyyy-MM-dd').format(date);
     Response response = await dio.get(
-      '/data/rankhandler.aspx?op=ph&dt=kf&ft=zq&rs=&gs=0&sc=1nzf&st=asc&sd=${today}&ed=${today}&qdii=|&tabSubtype=,,,,,&pi=1&pn=9999&dx=1',
+      '/data/rankhandler.aspx?op=ph&dt=kf&ft=zq&rs=&gs=0&sc=1nzf&st=asc&sd=${date}&ed=${date}&qdii=|&tabSubtype=,,,,,&pi=1&pn=9999&dx=1',
     );
     RegExp regExp = RegExp(r'datas:\s*\[(.*?)\]');
     Match? match = regExp.firstMatch(response.data);
