@@ -7,6 +7,7 @@ import 'package:chnqoo_wallet/pages/daily/widgets/stable.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -94,6 +95,7 @@ class DailyPageState extends State<DailyPage> {
   initGetStores() async {}
 
   initDatas() async {
+    EasyLoading.show(status: '加载中 ...');
     int start = DateTime.now().millisecondsSinceEpoch;
     List<FundToday> _list = [];
     var result = await Services().queryTodayBonds(DateFormat('yyyy-MM-dd')
@@ -111,6 +113,7 @@ class DailyPageState extends State<DailyPage> {
     list = _list;
     int end = DateTime.now().millisecondsSinceEpoch;
     print('⏰ sort: ${end - start}ms.');
+    EasyLoading.dismiss();
     setState(() {});
   }
 
