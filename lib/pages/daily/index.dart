@@ -23,7 +23,7 @@ class DailyPageState extends State<DailyPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   GetStores stores = Get.find<GetStores>();
   List<FundToday> list = [];
-  int dateTab = 1;
+  DateTime date = DateTime.now();
 
   _toString(dynamic s) {
     return s is num ? '${s.toStringAsFixed(2)}%' : s;
@@ -74,10 +74,13 @@ class DailyPageState extends State<DailyPage> {
               if (index == 0) {
                 return DailyStable(
                   list: list,
-                  dateTab: dateTab,
-                  onDateTabPress: (index) {
-                    dateTab = index;
-                    setState(() {});
+                  date: date,
+                  onDatePress: (index) {
+                    var previous = date.subtract(Duration(days: 1));
+                    var next = date.add(Duration(days: 1));
+                    setState(() {
+                      date = [previous, next][index];
+                    });
                     Future.delayed(Duration(microseconds: 1), () {
                       initDatas();
                     });
@@ -98,11 +101,8 @@ class DailyPageState extends State<DailyPage> {
     EasyLoading.show(status: '加载中 ...');
     int start = DateTime.now().millisecondsSinceEpoch;
     List<FundToday> _list = [];
-    var result = await Services().queryTodayBonds(DateFormat('yyyy-MM-dd')
-        .format([
-      DateTime.now(),
-      DateTime.now().subtract(Duration(days: 1))
-    ][dateTab]));
+    var result =
+        await Services().queryTodayBonds(DateFormat('yyyy-MM-dd').format(date));
     for (int i = 0; i < result.length; i++) {
       _list.add(FundToday.fromJson(result[i] as String));
     }

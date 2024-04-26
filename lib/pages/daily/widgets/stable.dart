@@ -1,15 +1,14 @@
 import 'package:chnqoo_wallet/constants/fund_today.dart';
 import 'package:chnqoo_wallet/pages/daily/widgets/item.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DailyStable extends StatefulWidget {
   List<FundToday> list;
-  int dateTab;
-  final onDateTabPress;
+  DateTime date;
+  final onDatePress;
   DailyStable(
-      {required this.list,
-      required this.dateTab,
-      required this.onDateTabPress});
+      {required this.list, required this.date, required this.onDatePress});
 
   @override
   State<StatefulWidget> createState() => DailyStableState();
@@ -26,29 +25,16 @@ class DailyStableState extends State<DailyStable> {
   ];
 
   tagBuilder(BuildContext context, int index) {
-    Color color = index == widget.dateTab
-        ? Theme.of(context).primaryColor
-        : Colors.black54;
     return GestureDetector(
       onTap: () {
-        widget.onDateTabPress(index);
+        widget.onDatePress(index);
       },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: color)),
-        child: Text(
-          [
-            '昨天',
-            '今天',
-          ][index],
-          style: TextStyle(
-            fontSize: 12,
-            color: color,
-          ),
-          // strutStyle: StrutStyle.fromTextStyle(),
-        ),
+      child: Icon(
+        [
+          Icons.arrow_back_ios_outlined,
+          Icons.arrow_forward_ios_outlined,
+        ][index],
+        size: 16,
       ),
     );
   }
@@ -154,8 +140,12 @@ class DailyStableState extends State<DailyStable> {
                         Row(
                           children: [
                             tagBuilder(context, 0),
-                            SizedBox(
-                              width: 12,
+                            Container(
+                              child: Text(
+                                DateFormat('yyyy-MM-dd').format(widget.date),
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 14),
+                              ),
                             ),
                             tagBuilder(context, 1)
                           ],
