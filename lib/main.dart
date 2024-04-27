@@ -1,4 +1,5 @@
 import 'package:chnqoo_wallet/constants/config.dart';
+import 'package:chnqoo_wallet/constants/fonts.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,7 +46,7 @@ class ChnqooWalletMobileState extends State<ChnqooWalletMobile> {
     return GetMaterialApp(
       title: '',
       theme: ThemeData(
-        fontFamily: 'HarmonyOS',
+        fontFamily: Fonts.HarmonyOS,
         // scaffoldBackgroundColor: CupertinoColors.systemBackground,
         colorScheme: ColorScheme.fromSeed(
           seedColor: CupertinoColors.systemBrown,

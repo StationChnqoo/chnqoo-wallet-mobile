@@ -60,8 +60,7 @@ class HomeMenus extends StatelessWidget {
               Flexible(
                   flex: 2,
                   child: menuBuilder(
-                      context, '蛋蛋', '恐龙蛋来喽', 'assets/home_dinosaur.png',
-                      () {
+                      context, '蛋蛋', '恐龙蛋来喽', 'assets/home_dinosaur.png', () {
                     Get.toNamed(RoutesClass.DAILY);
                   })),
               SizedBox(
@@ -70,8 +69,7 @@ class HomeMenus extends StatelessWidget {
               Flexible(
                   flex: 3,
                   child: menuBuilder(
-                      context, '行情', '实时指数、热门资讯', 'assets/home_pencil.png',
-                      () {
+                      context, '行情', '实时指数、热门资讯', 'assets/home_pencil.png', () {
                     Get.toNamed(RoutesClass.QUOTES);
                   })),
             ],
@@ -84,8 +82,8 @@ class HomeMenus extends StatelessWidget {
               Flexible(
                   flex: 3,
                   child: menuBuilder(
-                      context, '收益', '收益、排行', 'assets/home_pig.png', () {
-                    Get.toNamed(RoutesClass.COMPARE);
+                      context, '市场', '场内ETF', 'assets/home_pig.png', () {
+                    Get.toNamed(RoutesClass.MARKET);
                   })),
               SizedBox(
                 width: 12,

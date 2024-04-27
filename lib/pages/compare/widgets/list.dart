@@ -1,5 +1,6 @@
 import 'package:chnqoo_wallet/constants/fund_chart_line.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
+import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:chnqoo_wallet/routes/routes.dart';
 import 'package:chnqoo_wallet/widgets/my_title_card.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +106,6 @@ class CompareList extends StatelessWidget {
                                           icon: Icon(
                                             Icons.delete_outline,
                                             size: 18,
-                                  
                                           )),
                                     ),
                                   ],
@@ -133,9 +133,13 @@ class CompareList extends StatelessWidget {
               ),
               IconButton.filled(
                   onPressed: () {
-                    var _datas = [...stores.compareFunds, tec.text];
-                    stores.setCompareFunds(_datas);
-                    tec.text = "";
+                    if (RegExp(r'^\d{6}$').hasMatch(tec.text)) {
+                      var _datas = [...stores.compareFunds, tec.text];
+                      stores.setCompareFunds(_datas);
+                      tec.text = "";
+                    } else {
+                      x.toast('添加失败', '请输入正确的基金代码 ...');
+                    }
                   },
                   icon: Icon(Icons.add)),
               IconButton.outlined(

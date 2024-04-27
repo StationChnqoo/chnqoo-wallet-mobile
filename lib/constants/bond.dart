@@ -1,4 +1,3 @@
-import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'bond.g.dart';

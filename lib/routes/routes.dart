@@ -3,6 +3,7 @@ import 'package:chnqoo_wallet/pages/creator/index.dart';
 import 'package:chnqoo_wallet/pages/daily/index.dart';
 import 'package:chnqoo_wallet/pages/home/index.dart';
 import 'package:chnqoo_wallet/pages/import_fund.dart/index.dart';
+import 'package:chnqoo_wallet/pages/market/index.dart';
 import 'package:chnqoo_wallet/pages/quotes/index.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +15,7 @@ class RoutesClass {
   static String COMPARE = '/compare';
   static String IMPORT_FUND = '/import_fund';
   static String DAILY = '/daily';
+  static String MARKET = '/market';
 
   static List<GetPage> routes = [
     // GetPage(name: APP, page: () => App()),
@@ -22,6 +24,7 @@ class RoutesClass {
     GetPage(name: CREATOR, page: () => const CreatorPage()),
     GetPage(name: COMPARE, page: () => const ComparePage()),
     GetPage(name: IMPORT_FUND, page: () => const ImportFundPage()),
-    GetPage(name: DAILY, page: () => const DailyPage())
+    GetPage(name: DAILY, page: () => const DailyPage()),
+    GetPage(name: MARKET, page: () => const MarketPage())
   ];
 }

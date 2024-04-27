@@ -11,7 +11,8 @@ class DailyStable extends StatefulWidget {
   State<StatefulWidget> createState() => DailyStableState();
 }
 
-class DailyStableState extends State<DailyStable> with AutomaticKeepAliveClientMixin{
+class DailyStableState extends State<DailyStable>
+    with AutomaticKeepAliveClientMixin {
   int usefulCount = 0;
   int count = 0;
   List<FundToday> datas = [];
@@ -122,19 +123,27 @@ class DailyStableState extends State<DailyStable> with AutomaticKeepAliveClientM
           height: 4,
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 4),
-          padding: EdgeInsets.all(12),
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(12)),
-          child: Column(
-            children: [
-              ...datas.asMap().entries.map((e) => Container(
-                    margin: EdgeInsets.symmetric(vertical: 4),
-                    child: DailyItem(ft: e.value),
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(vertical: 4),
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(12)),
+            child: datas.length > 0
+                ? Column(
+                    children: [
+                      ...datas.asMap().entries.map((e) => Container(
+                            margin: EdgeInsets.symmetric(vertical: 4),
+                            child: DailyItem(ft: e.value),
+                          ))
+                    ],
+                  )
+                : Center(
+                    child: Text(
+                      '暂无数据 ~',
+                      style:
+                          TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                    ),
                   ))
-            ],
-          ),
-        )
       ],
     );
   }
@@ -166,6 +175,7 @@ class DailyStableState extends State<DailyStable> with AutomaticKeepAliveClientM
 
   @override
   // TODO: implement wantKeepAlive
+  // 保持组件状态，防止列表滑动的时候，丢掉状态 ...
   bool get wantKeepAlive => true;
 }
 
