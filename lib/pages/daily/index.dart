@@ -23,7 +23,6 @@ class DailyPageState extends State<DailyPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   GetStores stores = Get.find<GetStores>();
   List<FundToday> list = [];
-  DateTime date = DateTime.now();
 
   _toString(dynamic s) {
     return s is num ? '${s.toStringAsFixed(2)}%' : s;
@@ -72,23 +71,16 @@ class DailyPageState extends State<DailyPage> {
             itemCount: list.length + 1,
             itemBuilder: (context, index) {
               if (index == 0) {
-                return DailyStable(
-                  list: list,
-                  date: date,
-                  onDatePress: (index) {
-                    var previous = date.subtract(Duration(days: 1));
-                    var next = date.add(Duration(days: 1));
-                    setState(() {
-                      date = [previous, next][index];
-                    });
-                    Future.delayed(Duration(microseconds: 1), () {
-                      initDatas();
-                    });
-                  },
-                );
+                return DailyStable(list: list);
               } else {
                 FundToday ft = list[index - 1];
-                return DailyItem(ft: ft);
+                return Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: DailyItem(ft: ft));
               }
             }),
       ),
@@ -101,10 +93,13 @@ class DailyPageState extends State<DailyPage> {
     EasyLoading.show(status: '加载中 ...');
     int start = DateTime.now().millisecondsSinceEpoch;
     List<FundToday> _list = [];
-    var result =
-        await Services().queryTodayBonds(DateFormat('yyyy-MM-dd').format(date));
+    setState(() {
+      list = [];
+    });
+    var result = await Services().queryTodayBonds();
     for (int i = 0; i < result.length; i++) {
-      _list.add(FundToday.fromJson(result[i] as String));
+      var ft = FundToday.fromJson(result[i] as String);
+      _list.add(ft);
     }
     // return result;
     _list.sort(

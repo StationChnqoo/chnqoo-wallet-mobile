@@ -34,7 +34,7 @@ class CurlBuilder extends Interceptor {
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     // TODO: implement onResponse
     super.onResponse(response, handler);
-    x.usePrint('CurlBuilder', response.data);
+    // x.usePrint('CurlBuilder', response.data);
   }
 }
 
@@ -108,17 +108,16 @@ class Services {
     return span?.text ?? '';
   }
 
-  queryTodayBonds(String date) async {
+  queryTodayBonds() async {
     // https://fund.eastmoney.com
     // https://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=zq&rs=&gs=0&sc=1nzf&st=asc&sd=2023-04-23&ed=2024-04-23&qdii=|&tabSubtype=,,,,,&pi=1&pn=10000&dx=1
-    int start = DateTime.now().millisecondsSinceEpoch;
     List<String> list = [];
     dio.options.baseUrl = 'https://fund.eastmoney.com';
     dio.options.headers = {
       'referer': 'https://fund.eastmoney.com/data/fundranking.html'
     };
     Response response = await dio.get(
-      '/data/rankhandler.aspx?op=ph&dt=kf&ft=zq&rs=&gs=0&sc=1nzf&st=asc&sd=${date}&ed=${date}&qdii=|&tabSubtype=,,,,,&pi=1&pn=9999&dx=1',
+      '/data/rankhandler.aspx?op=ph&dt=kf&ft=zq&rs=&gs=0&sc=1nzf&st=asc&qdii=|&tabSubtype=,,,,,&pi=1&pn=9999&dx=1',
     );
     RegExp regExp = RegExp(r'datas:\s*\[(.*?)\]');
     Match? match = regExp.firstMatch(response.data);
@@ -127,9 +126,6 @@ class Services {
       List<dynamic> decoder = jsonDecode(text);
       list = decoder.cast<String>();
     }
-    int end = DateTime.now().millisecondsSinceEpoch;
-    print('🐔 list: ${list.length}.');
-    print('⏰ time: ${end - start}ms.');
     return list;
   }
 }

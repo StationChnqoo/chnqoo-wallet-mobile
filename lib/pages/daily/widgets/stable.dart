@@ -1,20 +1,17 @@
 import 'package:chnqoo_wallet/constants/fund_today.dart';
 import 'package:chnqoo_wallet/pages/daily/widgets/item.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class DailyStable extends StatefulWidget {
   List<FundToday> list;
-  DateTime date;
-  final onDatePress;
-  DailyStable(
-      {required this.list, required this.date, required this.onDatePress});
+
+  DailyStable({required this.list});
 
   @override
   State<StatefulWidget> createState() => DailyStableState();
 }
 
-class DailyStableState extends State<DailyStable> {
+class DailyStableState extends State<DailyStable> with AutomaticKeepAliveClientMixin{
   int usefulCount = 0;
   int count = 0;
   List<FundToday> datas = [];
@@ -23,21 +20,6 @@ class DailyStableState extends State<DailyStable> {
     Slide(name: '近半年', value: 4),
     Slide(name: '近一年', value: 7)
   ];
-
-  tagBuilder(BuildContext context, int index) {
-    return GestureDetector(
-      onTap: () {
-        widget.onDatePress(index);
-      },
-      child: Icon(
-        [
-          Icons.arrow_back_ios_outlined,
-          Icons.arrow_forward_ios_outlined,
-        ][index],
-        size: 16,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,28 +112,6 @@ class DailyStableState extends State<DailyStable> {
                     SizedBox(
                       height: 4,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '时间',
-                          style: TextStyle(color: Colors.black87, fontSize: 14),
-                        ),
-                        Row(
-                          children: [
-                            tagBuilder(context, 0),
-                            Container(
-                              child: Text(
-                                DateFormat('yyyy-MM-dd').format(widget.date),
-                                style: TextStyle(
-                                    color: Colors.black54, fontSize: 14),
-                              ),
-                            ),
-                            tagBuilder(context, 1)
-                          ],
-                        )
-                      ],
-                    )
                   ],
                 )
               ],
@@ -161,13 +121,27 @@ class DailyStableState extends State<DailyStable> {
         SizedBox(
           height: 4,
         ),
-        ...datas.asMap().entries.map((e) => DailyItem(ft: e.value))
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 4),
+          padding: EdgeInsets.all(12),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(12)),
+          child: Column(
+            children: [
+              ...datas.asMap().entries.map((e) => Container(
+                    margin: EdgeInsets.symmetric(vertical: 4),
+                    child: DailyItem(ft: e.value),
+                  ))
+            ],
+          ),
+        )
       ],
     );
   }
 
   datasUpdater() {
     count = widget.list.length;
+    print('Datas updater ...');
     List<FundToday> _list = [...widget.list];
     _list = _list
         .where((element) => element.values.every((e) => e is num))
@@ -189,6 +163,10 @@ class DailyStableState extends State<DailyStable> {
     super.didUpdateWidget(oldWidget);
     datasUpdater();
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class Slide {
