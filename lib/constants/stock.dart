@@ -10,11 +10,11 @@ class Stock {
   /** 股票名字 */
   String f58;
   /** 成交量 */
-  double f47;
+  num f47;
   /** 成交额 */
-  double f48;
+  num f48;
   /** 涨跌幅 */
-  double f170;
+  num f170;
 
   Stock({
     required this.f57,

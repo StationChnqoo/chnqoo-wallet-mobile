@@ -75,7 +75,7 @@ class MarketEtfState extends State<MarketEtf> {
                 height: 4,
               ),
               Text(
-                '估值通过综合分析市场债券交易综合得出，仅供参考 ~',
+                '估值通过综合分析市场${isDidiao ? '' : '债券'}交易综合得出，仅供参考 ~',
                 style: TextStyle(fontSize: 12, color: Colors.red),
               ),
               SizedBox(
@@ -88,7 +88,7 @@ class MarketEtfState extends State<MarketEtf> {
                   Row(
                     children: [
                       Text(
-                        '🐤🥚综合估值：',
+                        '${isDidiao ? '' : '🐤🥚'}综合估值：',
                         style: TextStyle(
                             fontSize: 14,
                             // fontWeight: FontWeight.w500,

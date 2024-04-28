@@ -11,7 +11,7 @@ Stock _$StockFromJson(Map<String, dynamic> json) => Stock(
       f58: json['f58'] as String,
       f47: (json['f47'] as num).toDouble(),
       f48: (json['f48'] as num).toDouble(),
-      f170: (json['f170'] as num).toDouble(),
+      f170: (json['f170'] as num).toInt(),
     );
 
 Map<String, dynamic> _$StockToJson(Stock instance) => <String, dynamic>{
