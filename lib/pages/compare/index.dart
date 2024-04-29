@@ -12,6 +12,7 @@ import 'package:chnqoo_wallet/pages/compare/widgets/time.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class ComparePage extends StatefulWidget {
@@ -199,8 +200,11 @@ class ComparePageState extends State<ComparePage> {
           color: x.useRandomColor(),
           datas: buildSumDots(dots)));
       lines = [..._lines];
+      EasyLoading.showProgress((i + 1) / stores.compareFunds.length,
+          status: '${(i + 1)}/${stores.compareFunds.length} ...');
       setState(() {});
     }
+    EasyLoading.showSuccess('搞定 ...');
   }
 
   @override

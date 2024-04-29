@@ -1,6 +1,7 @@
 import 'package:chnqoo_wallet/constants/fonts.dart';
 import 'package:chnqoo_wallet/constants/stock.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class MarketEtf extends StatefulWidget {
   final List<Stock> list;
@@ -64,12 +65,21 @@ class MarketEtfState extends State<MarketEtf> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '${isDidiao ? '' : '债券'}市场行情',
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w500),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${isDidiao ? '' : '债券'}市场行情',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Text(
+                    '${DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())}更新',
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+                  )
+                ],
               ),
               SizedBox(
                 height: 4,
@@ -88,7 +98,7 @@ class MarketEtfState extends State<MarketEtf> {
                   Row(
                     children: [
                       Text(
-                        '${isDidiao ? '' : '🐤🥚'}综合估值：',
+                        '🐤🥚综合估值：',
                         style: TextStyle(
                             fontSize: 14,
                             // fontWeight: FontWeight.w500,

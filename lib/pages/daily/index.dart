@@ -91,7 +91,6 @@ class DailyPageState extends State<DailyPage> {
 
   initDatas() async {
     EasyLoading.show(status: '加载中 ...');
-    int start = DateTime.now().millisecondsSinceEpoch;
     List<FundToday> _list = [];
     setState(() {
       list = [];
@@ -106,8 +105,6 @@ class DailyPageState extends State<DailyPage> {
       (a, b) => b.value.compareTo(a.value),
     );
     list = _list;
-    int end = DateTime.now().millisecondsSinceEpoch;
-    print('⏰ sort: ${end - start}ms.');
     EasyLoading.dismiss();
     setState(() {});
   }

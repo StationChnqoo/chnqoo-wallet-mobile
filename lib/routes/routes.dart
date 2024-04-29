@@ -1,6 +1,7 @@
 import 'package:chnqoo_wallet/pages/compare/index.dart';
 import 'package:chnqoo_wallet/pages/creator/index.dart';
 import 'package:chnqoo_wallet/pages/daily/index.dart';
+import 'package:chnqoo_wallet/pages/fund_detail/index.dart';
 import 'package:chnqoo_wallet/pages/home/index.dart';
 import 'package:chnqoo_wallet/pages/import_fund.dart/index.dart';
 import 'package:chnqoo_wallet/pages/market/index.dart';
@@ -13,9 +14,10 @@ class RoutesClass {
   static String QUOTES = '/quotes';
   static String CREATOR = '/creator';
   static String COMPARE = '/compare';
-  static String IMPORT_FUND = '/import_fund';
+  static String IMPORT_FUND = '/importFund';
   static String DAILY = '/daily';
   static String MARKET = '/market';
+  static String FUND_DETAIL = '/fundDetail';
 
   static List<GetPage> routes = [
     // GetPage(name: APP, page: () => App()),
@@ -25,6 +27,13 @@ class RoutesClass {
     GetPage(name: COMPARE, page: () => const ComparePage()),
     GetPage(name: IMPORT_FUND, page: () => const ImportFundPage()),
     GetPage(name: DAILY, page: () => const DailyPage()),
-    GetPage(name: MARKET, page: () => const MarketPage())
+    GetPage(name: MARKET, page: () => const MarketPage()),
+    GetPage(
+      name: FUND_DETAIL,
+      page: () => const FundDetailPage(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => FundDetailParams(Get.parameters['id']!));
+      }),
+    )
   ];
 }

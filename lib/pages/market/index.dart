@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
@@ -35,6 +37,7 @@ class MarketPageState extends State<MarketPage> {
   ];
 
   List<Stock> stocks = [];
+  late Timer timer;
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +76,9 @@ class MarketPageState extends State<MarketPage> {
       var result = await Services().queryStock(codes[i]);
       print(result);
       list.add(Stock.fromJson(result['data']));
-      stocks = [...list];
-      setState(() {});
     }
+    stocks = [...list];
+    setState(() {});
     EasyLoading.showSuccess('搞定 ~');
   }
 
@@ -84,5 +87,15 @@ class MarketPageState extends State<MarketPage> {
     // TODO: implement initState
     super.initState();
     initStocks();
+    timer = Timer.periodic(Duration(seconds: 10), (timer) {
+      initStocks();
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    timer.cancel();
   }
 }

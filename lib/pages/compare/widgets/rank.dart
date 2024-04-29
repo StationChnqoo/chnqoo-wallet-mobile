@@ -1,6 +1,8 @@
 import 'package:chnqoo_wallet/constants/fund_chart_line.dart';
 import 'package:chnqoo_wallet/constants/x.dart';
+import 'package:chnqoo_wallet/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CompareRank extends StatelessWidget {
   final int index;
@@ -64,26 +66,33 @@ class CompareRank extends StatelessWidget {
               ],
             ),
             ...findSortedFunds().asMap().entries.map((e) => Container(
-                margin: EdgeInsets.only(top: 6),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        maxLines: 1,
-                        '${e.value.id} · ${e.value.name}',
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 14,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                    ),
-                    Text(
-                      '${(e.value.datas.last.value * 100).toInt()}🥚',
-                      style: TextStyle(fontSize: 14, color: Colors.black87),
-                    )
-                  ],
-                )))
+                  margin: EdgeInsets.only(top: 6),
+                  child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed(RoutesClass.FUND_DETAIL,
+                            parameters: {"id": e.value.id});
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              maxLines: 1,
+                              '${e.value.id} · ${e.value.name}',
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 14,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
+                          Text(
+                            '${(e.value.datas.last.value * 100).toInt()}🥚',
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.black87),
+                          )
+                        ],
+                      )),
+                ))
           ],
         ));
   }
