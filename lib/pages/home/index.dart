@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -59,21 +60,6 @@ class HomePageState extends State<HomePage> {
                               ))),
                     ),
                     Positioned(
-                        top: 12,
-                        right: 12,
-                        child: IconButton.outlined(
-                          padding: EdgeInsets.zero,
-                          style: ButtonStyle(
-                              iconSize: MaterialStatePropertyAll(20)),
-                          onPressed: () {
-                            initGetStores();
-                          },
-                          icon: Icon(
-                            Icons.refresh_outlined,
-                            color: Colors.white,
-                          ),
-                        )),
-                    Positioned(
                         bottom: 0,
                         left: 0,
                         child: Container(
@@ -129,6 +115,8 @@ class HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    initGetStores();
+    Timer timer = Timer.periodic(Duration(seconds: 10), (timer) {
+      initGetStores();
+    });
   }
 }
