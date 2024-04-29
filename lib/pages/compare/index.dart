@@ -2,6 +2,7 @@ import 'package:chnqoo_wallet/constants/bond_compare.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/fund_chart_dot.dart';
 import 'package:chnqoo_wallet/constants/fund_chart_line.dart';
+import 'package:chnqoo_wallet/constants/fund_tiantian.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/constants/x.dart';
@@ -28,7 +29,6 @@ class ComparePageState extends State<ComparePage> {
   GetStores stores = Get.find<GetStores>();
   List<BondCompare> datas = [];
   List<FundChartLine> lines = [];
-  List<String> names = [];
   List<DateTime> times = [DateTime.now(), DateTime.now()];
   int tab = 0;
 
@@ -186,6 +186,8 @@ class ComparePageState extends State<ComparePage> {
 
   fundChartLineBuilder() async {
     var _lines = [];
+    List<FundTiantian> tiantianFunds =
+        await Services().queryFundsBasic(stores.compareFunds);
     for (int i = 0; i < stores.compareFunds.length; i++) {
       String code = stores.compareFunds[i];
       var result = await Services().selectBondPrice(
@@ -196,7 +198,9 @@ class ComparePageState extends State<ComparePage> {
           .toList();
       _lines.add(FundChartLine(
           id: code,
-          name: await Services().queryFundName(code),
+          name: tiantianFunds
+              .firstWhereOrNull((element) => element.QDCODE == code)!
+              .SHORTNAME,
           color: x.useRandomColor(),
           datas: buildSumDots(dots)));
       lines = [..._lines];

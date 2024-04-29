@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chnqoo_wallet/constants/fund_tiantian.dart';
 import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:dio/dio.dart';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
@@ -97,6 +98,36 @@ class Services {
       '/f10/lsjz?callback=&fundCode=${id}&pageIndex=1&pageSize=365&startDate=${startDate}&endDate=${endDate}&_=${milliseconds}',
     );
     return response.data;
+  }
+
+  queryFundsBasic(List<String> codes) async {
+    dio.options.baseUrl = 'https://fundcomapi.tiantianfunds.com';
+    int pageSize = 10; // 每页的大小
+    List<FundTiantian> list = [];
+    // 计算总页数
+    int totalPages = (codes.length / pageSize).ceil();
+    // 模拟分页请求
+    for (int page = 0; page < totalPages; page++) {
+      int start = page * pageSize;
+      int end = (page + 1) * pageSize;
+      if (end > codes.length) {
+        end = codes.length;
+      }
+      List<String> subCodes = codes.sublist(start, end);
+      /** 接口限制，最多只能查30个 */
+      Response response = await dio.post('/mm/newCore/FundCoreDiyNew',
+          queryParameters: Map.of({
+            'FCODES': subCodes.join(','),
+            'FIELDS':
+                'SHORTNAME,RZDF,DWJZ,LJJZ,SYL_1N,SYL_LN,FSRQ,ISBUY,DTZT,FTYPE,FCODE,ISSALES,ISSBDATE,ISSEDATE,TSRQ,BACKCODE,MINSG,MINSBSG,SHZT,SGZT,SOURCERATE,RATE,REALSGCODE,FEATURE,SYL,MINRG,SYL_Z,BFUNDTYPE,QDTCODE,MINDT,BAGTYPE,FUNDTYPE,BENCH,ESTABDATE,,SELLSTATE,ESTDIFF,SYSDATE,PTYPE,FUNDTYPE,ISEXCHG,ISNEW,BTYPE'
+          }));
+      var data = response.data['data'] as List;
+      List<FundTiantian> tiantianFunds = data
+          .map<FundTiantian>((json) => FundTiantian.fromJson(json))
+          .toList();
+      list = [...list, ...tiantianFunds];
+    }
+    return list;
   }
 
   queryFundName(String code) async {

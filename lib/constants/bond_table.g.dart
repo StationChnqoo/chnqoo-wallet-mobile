@@ -7,7 +7,7 @@ part of 'bond_table.dart';
 // **************************************************************************
 
 BondTable _$BondTableFromJson(Map<String, dynamic> json) => BondTable(
-      weather: json['weather'] as int,
+      weather: (json['weather'] as num).toInt(),
       title: json['title'] as String,
       columns:
           (json['columns'] as List<dynamic>).map((e) => e as String).toList(),

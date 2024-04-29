@@ -7,7 +7,7 @@ part of 'fund_group.dart';
 // **************************************************************************
 
 FundGroup _$FundGroupFromJson(Map<String, dynamic> json) => FundGroup(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       codes: (json['codes'] as List<dynamic>).map((e) => e as String).toList(),
     );
