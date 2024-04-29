@@ -15,6 +15,7 @@ class Config {
   /** UI */
   static double PAGE_PADDING = 15;
   static Color PAGE_BACKGROUND = Color.fromARGB(0, 244, 234, 203);
+  static String ME = '@你这债鸡保熟吗';
 
   /** 映射Config文件 */
   static String useConfigDotenvFile(String package) {
