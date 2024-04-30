@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:chnqoo_wallet/constants/bond_forward.dart';
+import 'package:chnqoo_wallet/constants/bond_forward_panel.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/constants/stock.dart';
+import 'package:chnqoo_wallet/pages/market/widgets/bond_forward.dart';
 import 'package:chnqoo_wallet/pages/market/widgets/etf.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,6 +42,9 @@ class MarketPageState extends State<MarketPage> {
   List<Stock> stocks = [];
   late Timer timer;
 
+  /** 2 5 10 30年债券期货 */
+  List<BondForwardPanel> bondForwards = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +67,14 @@ class MarketPageState extends State<MarketPage> {
             ),
             MarketEtf(
               list: stocks,
-            )
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            ...bondForwards
+                .asMap()
+                .entries
+                .map((e) => MarketBondForward(bondForwardPanel: e.value))
           ],
         )),
       ),
@@ -82,14 +95,30 @@ class MarketPageState extends State<MarketPage> {
     EasyLoading.showSuccess('搞定 ~');
   }
 
+  initBondForwards() async {
+    List<int> bfCodes = [6, 5, 4, 8];
+    List<String> bfTitles = ['两年债券', '5年债券', '10年债券', '30年债券'];
+    var _bondForwards = [];
+    for (int i = 0; i < 4; i++) {
+      List<BondForward> bfs =
+          await Services().queryBondForwardPrices(bfCodes[i]);
+      _bondForwards.add(
+          BondForwardPanel(code: bfCodes[i], title: bfTitles[i], datas: bfs));
+      setState(() {
+        bondForwards = [..._bondForwards];
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initStocks();
-    timer = Timer.periodic(Duration(seconds: 10), (timer) {
+    timer = Timer.periodic(Duration(seconds: 60), (timer) {
       initStocks();
     });
+    initBondForwards();
   }
 
   @override
@@ -97,5 +126,6 @@ class MarketPageState extends State<MarketPage> {
     // TODO: implement dispose
     super.dispose();
     timer.cancel();
+    EasyLoading.dismiss();
   }
 }

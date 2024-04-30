@@ -33,7 +33,7 @@ class Stock {
       throw FormatException("Unexpected type for dynamic property");
     }
   }
-
+  
   // factory Bond.fromJson(Map<String, dynamic> json) => _$BondFromJson(json);
   factory Stock.fromJson(Map<String, dynamic> json) {
     return Stock(

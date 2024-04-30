@@ -1,10 +1,10 @@
 import 'dart:convert';
 
+import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:chnqoo_wallet/constants/bond_forward.dart';
 import 'package:chnqoo_wallet/constants/fund_tiantian.dart';
 import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:dio/dio.dart';
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
-import 'package:intl/intl.dart';
 
 // Dio在原有返回的结构上包了一层data -> {data: {success: bool, data: map}}
 
@@ -128,6 +128,25 @@ class Services {
       list = [...list, ...tiantianFunds];
     }
     return list;
+  }
+
+  /**
+   * 期货价格
+   * 8: 30年债券
+   * 4: 10年债券
+   * 5: 5年债券
+   * 6: 2年债券
+   */
+  queryBondForwardPrices(int code) async {
+    dio.options.baseUrl = 'https://futsseapi.eastmoney.com';
+    Response response = await dio.get(
+        '/list/variety/220/${code}?orderBy=zdf&sort=desc&pageSize=10&pageIndex=0&field=zdf,sc,dm,name,p,zde,vol,ccl,zjsj&callbackName=');
+    String data = response.data.toString();
+    dynamic result = jsonDecode(data.substring(1, data.length - 1));
+    List<dynamic> list = result['list'];
+    List<BondForward> bfs =
+        list.map<BondForward>((e) => BondForward.fromJson(e)).toList();
+    return bfs;
   }
 
   queryFundName(String code) async {
