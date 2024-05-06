@@ -6,6 +6,7 @@ import 'package:chnqoo_wallet/pages/home/index.dart';
 import 'package:chnqoo_wallet/pages/import_fund.dart/index.dart';
 import 'package:chnqoo_wallet/pages/market/index.dart';
 import 'package:chnqoo_wallet/pages/quotes/index.dart';
+import 'package:chnqoo_wallet/pages/warehouse/index.dart';
 import 'package:get/get.dart';
 
 class RoutesClass {
@@ -18,6 +19,7 @@ class RoutesClass {
   static String DAILY = '/daily';
   static String MARKET = '/market';
   static String FUND_DETAIL = '/fundDetail';
+  static String WAREHOUSE = '/warehouse';
 
   static List<GetPage> routes = [
     // GetPage(name: APP, page: () => App()),
@@ -34,6 +36,7 @@ class RoutesClass {
       binding: BindingsBuilder(() {
         Get.lazyPut(() => FundDetailParams(Get.parameters['id']!));
       }),
-    )
+    ),
+    GetPage(name: WAREHOUSE, page: () => const WarehousePage()),
   ];
 }

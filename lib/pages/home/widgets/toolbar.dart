@@ -52,7 +52,7 @@ class HomeToolBarState extends State<HomeToolBar>
                       height: 36.0,
                       borderRadius: BorderRadius.circular(18.0)),
                   Text(
-                    '蚂蚁财富创作中心',
+                    '陈桥驿站',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   // Image.asset(

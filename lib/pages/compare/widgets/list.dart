@@ -4,6 +4,7 @@ import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:chnqoo_wallet/routes/routes.dart';
 import 'package:chnqoo_wallet/widgets/my_title_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class CompareList extends StatelessWidget {

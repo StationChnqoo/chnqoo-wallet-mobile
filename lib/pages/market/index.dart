@@ -6,6 +6,7 @@ import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/constants/stock.dart';
+import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:chnqoo_wallet/pages/market/widgets/bond_forward.dart';
 import 'package:chnqoo_wallet/pages/market/widgets/etf.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
@@ -40,7 +41,7 @@ class MarketPageState extends State<MarketPage> {
   ];
 
   List<Stock> stocks = [];
-  late Timer timer;
+  Timer? timer;
 
   /** 2 5 10 30年债券期货 */
   List<BondForwardPanel> bondForwards = [];
@@ -114,18 +115,31 @@ class MarketPageState extends State<MarketPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    initStocks();
-    timer = Timer.periodic(Duration(seconds: 60), (timer) {
+    // 获取当前时间
+    DateTime now = DateTime.now();
+
+    // 设置起始时间和结束时间
+    DateTime left = DateTime(now.year, now.month, now.day, 7, 30);
+    DateTime right = DateTime(now.year, now.month, now.day, 9, 30);
+
+    if (now.isAfter(left) && now.isBefore(right)) {
+      
+    } else {
       initStocks();
-    });
-    initBondForwards();
+      timer = Timer.periodic(Duration(seconds: 60), (timer) {
+        initStocks();
+      });
+      initBondForwards();
+    }
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    timer.cancel();
+    if (timer != null && timer!.isActive) {
+      timer!.cancel();
+    }
     EasyLoading.dismiss();
   }
 }

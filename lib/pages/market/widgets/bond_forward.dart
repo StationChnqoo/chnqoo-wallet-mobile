@@ -23,29 +23,33 @@ class MarketBondForward extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 color: Colors.black87),
           ),
-          ...bondForwardPanel.datas.asMap().entries.map((e) => Container(
-                margin: EdgeInsets.only(top: 2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '${e.value.name}',
-                      style: TextStyle(color: Colors.black54, fontSize: 14),
+          ...bondForwardPanel.datas
+              .sublist(0, 3)
+              .asMap()
+              .entries
+              .map((e) => Container(
+                    margin: EdgeInsets.only(top: 2),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${e.value.name}',
+                          style: TextStyle(color: Colors.black54, fontSize: 14),
+                        ),
+                        Text(
+                          '${e.value.zde.toStringAsFixed(2)}%',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: e.value.zde > 0
+                                  ? Colors.red
+                                  : e.value.zde < 0
+                                      ? Colors.green
+                                      : Colors.black54),
+                        )
+                      ],
                     ),
-                    Text(
-                      '${e.value.zde.toStringAsFixed(2)}%',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: e.value.zde > 0
-                              ? Colors.red
-                              : e.value.zde < 0
-                                  ? Colors.green
-                                  : Colors.black54),
-                    )
-                  ],
-                ),
-              )),
+                  )),
         ],
       ),
     );
