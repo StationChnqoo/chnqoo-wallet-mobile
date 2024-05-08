@@ -15,6 +15,7 @@ void main() async {
   await ScreenUtil.ensureScreenSize();
   String env = Config.useConfigDotenvFile(Config.APP_PACKAGE_NAME);
   await dotenv.load(fileName: env);
+
   // init Hive
   // final document = await getApplicationDocumentsDirectory();
   // Logger().d('App document dir: ${document.path}');
@@ -43,6 +44,7 @@ class ChnqooWalletMobileState extends State<ChnqooWalletMobile> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 640));
+
     return GetMaterialApp(
       title: '',
       theme: ThemeData(
@@ -69,20 +71,12 @@ class ChnqooWalletMobileState extends State<ChnqooWalletMobile> {
         const Locale('zh'),
         const Locale('en'),
       ],
-      builder: (BuildContext context, Widget? child) {
-        final MediaQueryData data = MediaQuery.of(context);
-        Widget newWidget = Container();
-        if (child == null) {
-        } else {
-          newWidget = MediaQuery(
-            data: data.copyWith(textScaler: TextScaler.linear(1.0)),
-            child: FlutterEasyLoading(
-              child: child,
-            ),
-          );
-        }
-        return newWidget;
-      },
+      builder: EasyLoading.init(builder: (context, widget) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
+          child: widget!,
+        );
+      }),
       initialRoute: RoutesClass.APP,
       getPages: RoutesClass.routes,
       defaultTransition: Transition.rightToLeft,
