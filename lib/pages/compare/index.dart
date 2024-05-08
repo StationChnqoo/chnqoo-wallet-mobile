@@ -219,4 +219,11 @@ class ComparePageState extends State<ComparePage> {
     initGetStores();
     onTabPress(0);
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    EasyLoading.dismiss();
+  }
 }

@@ -2,6 +2,7 @@ import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/fund_today.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
+import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:chnqoo_wallet/pages/daily/widgets/item.dart';
 import 'package:chnqoo_wallet/pages/daily/widgets/stable.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:screenshot/screenshot.dart';
 
 class DailyPage extends StatefulWidget {
   const DailyPage({super.key});
@@ -23,6 +25,7 @@ class DailyPageState extends State<DailyPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   GetStores stores = Get.find<GetStores>();
   List<FundToday> list = [];
+  ScreenshotController screenshotController = ScreenshotController();
 
   _toString(dynamic s) {
     return s is num ? '${s.toStringAsFixed(2)}%' : s;
@@ -53,6 +56,29 @@ class DailyPageState extends State<DailyPage> {
     );
   }
 
+  onSharePress() {
+    if (GetPlatform.isWeb) {
+      x.toast('抱歉', '此功能在Web平台暂时无法使用 ~');
+    } else {
+      screenshotController
+          .captureFromLongWidget(
+              MediaQuery(
+                data: MediaQueryData(size: MediaQuery.of(context).size),
+                child: DailyStable(
+                  list: list,
+                ),
+              ),
+              delay: Duration(milliseconds: 1),
+              context: context,
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width,
+              ))
+          .then((value) {
+        print('Screenshot: ${value}');
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +97,24 @@ class DailyPageState extends State<DailyPage> {
             itemCount: list.length + 1,
             itemBuilder: (context, index) {
               if (index == 0) {
-                return DailyStable(list: list);
+                return Column(
+                  children: [
+                    DailyStable(list: list),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(),
+                        FilledButton(onPressed: onSharePress, child: Text('分享'))
+                      ],
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                  ],
+                );
               } else {
                 FundToday ft = list[index - 1];
                 return Container(
