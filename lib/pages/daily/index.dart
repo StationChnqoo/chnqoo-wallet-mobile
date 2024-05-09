@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/fund_today.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
@@ -8,9 +11,10 @@ import 'package:chnqoo_wallet/pages/daily/widgets/stable.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:screenshot/screenshot.dart';
 
 class DailyPage extends StatefulWidget {
@@ -63,18 +67,26 @@ class DailyPageState extends State<DailyPage> {
       screenshotController
           .captureFromLongWidget(
               MediaQuery(
-                data: MediaQueryData(size: MediaQuery.of(context).size),
-                child: DailyStable(
-                  list: list,
-                ),
-              ),
-              delay: Duration(milliseconds: 1),
+                  data: MediaQueryData(size: MediaQuery.of(context).size),
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.08)),
+                      child: Column(children: [
+                        DailyStable(
+                          list: list,
+                        ),
+                      ]))),
+              delay: Duration(milliseconds: 618),
               context: context,
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width,
               ))
-          .then((value) {
+          .then((value) async {
         print('Screenshot: ${value}');
+        final result = await ImageGallerySaver.saveImage(value);
+        print('Screenshot save in gallery: ${result}');
+        x.toast('保存成功', result['filePath']);
       });
     }
   }
@@ -100,19 +112,6 @@ class DailyPageState extends State<DailyPage> {
                 return Column(
                   children: [
                     DailyStable(list: list),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(),
-                        FilledButton(onPressed: onSharePress, child: Text('分享'))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
                   ],
                 );
               } else {
