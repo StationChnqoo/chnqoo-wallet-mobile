@@ -6,6 +6,7 @@ import 'package:chnqoo_wallet/constants/bing_wall_paper.dart';
 import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
+import 'package:chnqoo_wallet/mixin/lifecycle.dart';
 import 'package:chnqoo_wallet/pages/home/widgets/menus.dart';
 import 'package:chnqoo_wallet/pages/home/widgets/toolbar.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,7 +20,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => HomePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> with Lifecycle {
   ScrollController? swiper;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   GetStores stores = Get.find<GetStores>();
@@ -118,5 +119,17 @@ class HomePageState extends State<HomePage> {
     Timer timer = Timer.periodic(Duration(seconds: 10), (timer) {
       initGetStores();
     });
+  }
+
+  @override
+  void onShow() {
+    // TODO: implement onShow
+    super.onShow();
+  }
+
+  @override
+  void onHide() {
+    // TODO: implement onHide
+    super.onHide();
   }
 }

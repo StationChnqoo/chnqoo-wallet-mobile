@@ -61,6 +61,9 @@ class ChnqooWalletMobileState extends State<ChnqooWalletMobile> {
           ),
         ),
       ),
+      routingCallback: (route) {
+        print('Current route: ${route!.current}');
+      },
       locale: Locale('zh'),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -73,7 +76,8 @@ class ChnqooWalletMobileState extends State<ChnqooWalletMobile> {
       ],
       builder: EasyLoading.init(builder: (context, widget) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: TextScaler.linear(1.0)),
           child: widget!,
         );
       }),
