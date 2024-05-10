@@ -4,7 +4,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 mixin Lifecycle<T extends StatefulWidget> on State<T> {
   void _onVisibilityChanged(VisibilityInfo info) {
     double visiblePercentage = info.visibleFraction * 100;
-    print('_onVisibilityChanged: $visiblePercentage');
+    // print('_onVisibilityChanged: $visiblePercentage');
     if (visiblePercentage == 0) {
       onHide();
     } else if (visiblePercentage == 100) {
@@ -12,19 +12,25 @@ mixin Lifecycle<T extends StatefulWidget> on State<T> {
     }
   }
 
+  Widget build(BuildContext context) {
+    return buildWithVisibilityDetector(context);
+  }
+
   Widget buildWithVisibilityDetector(BuildContext context) {
     return VisibilityDetector(
       key: Key('App'),
       onVisibilityChanged: _onVisibilityChanged,
-      child: build(context),
+      child: buildContent(context),
     );
   }
 
   void onShow() {
-    print('Widget is shown.');
+    // print('Current widget is shown.');
   }
 
   void onHide() {
-    print('Widget is hidden.');
+    // print('Current widget is hidden.');
   }
+
+  Widget buildContent(BuildContext context);
 }

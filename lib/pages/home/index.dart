@@ -28,7 +28,7 @@ class HomePageState extends State<HomePage> with Lifecycle {
   onMinePress() {}
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildContent(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       appBar: PreferredSize(
@@ -125,11 +125,13 @@ class HomePageState extends State<HomePage> with Lifecycle {
   void onShow() {
     // TODO: implement onShow
     super.onShow();
+    print('Current widget is shown.');
   }
 
   @override
   void onHide() {
     // TODO: implement onHide
     super.onHide();
+    print('Current widget is hidden.');
   }
 }
