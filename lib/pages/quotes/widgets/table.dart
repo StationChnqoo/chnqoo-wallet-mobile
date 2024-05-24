@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:chnqoo_wallet/constants/bond_table.dart';
+import 'package:chnqoo_wallet/constants/config.dart';
 import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:chnqoo_wallet/widgets/my_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -121,7 +122,7 @@ class QuotesTable extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        '@你这债鸡保熟吗',
+                        Config.ME,
                         style: TextStyle(color: Colors.red, fontSize: 12),
                       ),
                       SizedBox(
