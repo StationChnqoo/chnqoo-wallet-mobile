@@ -8,6 +8,7 @@ import 'package:chnqoo_wallet/constants/get_stores.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/mixin/lifecycle.dart';
 import 'package:chnqoo_wallet/pages/home/widgets/menus.dart';
+import 'package:chnqoo_wallet/pages/home/widgets/realtime_stock.dart';
 import 'package:chnqoo_wallet/pages/home/widgets/toolbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,6 +100,7 @@ class HomePageState extends State<HomePage> with Lifecycle {
             SizedBox(
               height: 12,
             ),
+            HomeRealtimeStock(),
             HomeMenus()
           ],
         )),
