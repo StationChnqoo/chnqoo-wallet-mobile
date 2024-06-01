@@ -23,6 +23,7 @@ class MarketEtfState extends State<MarketEtf> {
                           f47: value.f47,
                           f48: value.f48,
                           f170: value.f170 + element.f170,
+                          code: ''
                         ))
                     .f170 /
                 widget.list.length)

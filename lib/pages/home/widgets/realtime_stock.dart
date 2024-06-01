@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:chnqoo_wallet/constants/fonts.dart';
-import 'package:chnqoo_wallet/constants/realtime_stock.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/constants/stock.dart';
 import 'package:flutter/material.dart';
@@ -17,15 +16,30 @@ class HomeRealtimeStock extends StatefulWidget {
 class HomeRealtimeStockState extends State<HomeRealtimeStock> {
   ScrollController? swiper;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  int currentStock = 0;
 
   String id = '';
-  List<RealtimeStock> images = [
-    RealtimeStock(name: '沪深300', code: '1.000300', random: 0),
-    RealtimeStock(name: '创业板指', code: '0.399006', random: 0),
-    RealtimeStock(name: '上证指数', code: '1.000001', random: 0),
-  ];
-
   List<Stock> stocks = [];
+
+  loadPicture(Stock stock) {
+    return Flexible(
+        child: Container(
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(12)),
+            // padding: EdgeInsets.all(12),
+            // margin: EdgeInsets.only(bottom: 12),
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                      width: double.infinity,
+                      fit: BoxFit.fitWidth,
+                      'https://webquotepic.eastmoney.com/GetPic.aspx?imageType=r&type=&nid=${stock.code}&r=${DateTime.now().millisecond}'),
+                ),
+              ],
+            )));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +60,7 @@ class HomeRealtimeStockState extends State<HomeRealtimeStock> {
                                 Text(
                                   e.f58,
                                   style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(
@@ -65,7 +79,7 @@ class HomeRealtimeStockState extends State<HomeRealtimeStock> {
                                               : Colors.black54),
                                 ),
                                 Text(
-                                  ' % ',
+                                  '%',
                                   style: TextStyle(
                                       fontSize: 10, color: Colors.black87),
                                 )
@@ -75,41 +89,34 @@ class HomeRealtimeStockState extends State<HomeRealtimeStock> {
                     ],
                   ),
                 )),
-        ...images.map((e) => Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(12)),
-              padding: EdgeInsets.all(12),
-              margin: EdgeInsets.only(bottom: 12),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                    width: double.infinity,
-                    fit: BoxFit.fitWidth,
-                    'https://webquotepic.eastmoney.com/GetPic.aspx?imageType=r&type=&nid=${e.code}&r=${e.random}'),
-              ),
-            ))
+        Row(
+          children: [
+            stocks.length > 0 ? loadPicture(stocks[currentStock]) : Container()
+          ],
+        )
       ],
     );
   }
 
   initDatas() async {
-    Timer timer = Timer.periodic(Duration(seconds: 10), (timer) async {
-      var _images = [...images];
-      for (int i = 0; i < _images.length; i++) {
-        _images[i].random = Random().nextDouble();
-      }
-
+    Timer.periodic(Duration(seconds: 10), (timer) async {
       List<Stock> _stocks = [];
-      List<String> codes = ['1.000300', '0.399006', '1.000001'];
+      List<String> codes = ['1.000300', '0.399006', '1.000001', '0.399007'];
       for (int i = 0; i < codes.length; i++) {
         var result = await Services().queryStock(codes[i]);
         Stock stock = Stock.fromJson(result['data']);
+        stock.code = codes[i];
         _stocks.add(stock);
       }
 
       setState(() {
-        images = _images;
         stocks = _stocks;
+      });
+    });
+
+    Timer.periodic(Duration(seconds: 2), (timer) async {
+      setState(() {
+        currentStock = stocks.length > 0 ? Random().nextInt(stocks.length) : 0;
       });
     });
   }

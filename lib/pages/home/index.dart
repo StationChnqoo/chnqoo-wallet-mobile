@@ -101,6 +101,9 @@ class HomePageState extends State<HomePage> with Lifecycle {
               height: 12,
             ),
             HomeRealtimeStock(),
+            SizedBox(
+              height: 12,
+            ),
             HomeMenus(),
             SizedBox(
               height: 32,

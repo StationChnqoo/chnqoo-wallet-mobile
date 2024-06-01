@@ -14,6 +14,8 @@ class Stock {
   num f48;
   /** 涨跌幅 */
   num f170;
+  /** 详情接口或者图片趋势的时候用 */
+  String code;
 
   Stock({
     required this.f57,
@@ -21,6 +23,7 @@ class Stock {
     required this.f47,
     required this.f48,
     required this.f170,
+    required this.code,
   });
 
   static dynamic _parseDynamic(dynamic value) {
@@ -41,6 +44,7 @@ class Stock {
       f47: json['f47'],
       f48: json['f48'],
       f170: json['f170'],
+      code: ''
     );
   }
 
