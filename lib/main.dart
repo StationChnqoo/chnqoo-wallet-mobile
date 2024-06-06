@@ -20,6 +20,7 @@ void main() async {
   // final document = await getApplicationDocumentsDirectory();
   // Logger().d('App document dir: ${document.path}');
   await GetStorage.init();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const ChnqooWalletMobile());
 }
 

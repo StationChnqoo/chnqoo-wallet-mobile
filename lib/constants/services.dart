@@ -22,7 +22,8 @@ class CurlBuilder extends Interceptor {
     if (options.data != null) {
       curlCommand += " --data '${options.data}'";
     }
-    x.usePrint('CurlBuilder', curlCommand);
+    List<String> couldPrintUrls = [];
+    // x.usePrint('CurlBuilder', curlCommand);
   }
 
   @override
@@ -200,5 +201,16 @@ class Services {
       list = decoder.cast<String>();
     }
     return list;
+  }
+
+  queryStocksCount() async {
+    dio.options.baseUrl = 'https://push2.eastmoney.com';
+    dio.options.headers = {
+      'referer': 'https://data.eastmoney.com/zjlx/dpzjlx.html'
+    };
+    Response response = await dio.get(
+      '/api/qt/ulist.np/get?cb=&fltt=2&secids=1.000001%2C0.399001&fields=f1%2Cf2%2Cf3%2Cf4%2Cf6%2Cf12%2Cf13%2Cf104%2Cf105%2Cf106',
+    );
+    return response.data;
   }
 }

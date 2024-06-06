@@ -57,32 +57,40 @@ class HomeRealtimeStockState extends State<HomeRealtimeStock> {
                       ...stocks.map((e) => Container(
                             child: Row(
                               children: [
-                                Text(
-                                  e.f58,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500),
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          (e.f170 / 100).toStringAsFixed(2) + '%',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              // fontFamily: Fonts.TimebombBb,
+                                              color: e.f170 > 0
+                                                  ? Colors.red
+                                                  : e.f170 < 0
+                                                      ? Colors.green
+                                                      : Colors.black54),
+                                        ),
+                                        // Text(
+                                        //   '%',
+                                        //   style: TextStyle(
+                                        //       fontSize: 10,
+                                        //       color: Colors.black87),
+                                        // )
+                                      ],
+                                    ),
+                                    Text(
+                                      e.f58,
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black54
+                                          // fontWeight: FontWeight.w500
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 6,
-                                ),
-                                Text(
-                                  (e.f170 / 100).toStringAsFixed(2),
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w500,
-                                      fontFamily: Fonts.TimebombBb,
-                                      color: e.f170 > 0
-                                          ? Colors.red
-                                          : e.f170 < 0
-                                              ? Colors.green
-                                              : Colors.black54),
-                                ),
-                                Text(
-                                  '%',
-                                  style: TextStyle(
-                                      fontSize: 10, color: Colors.black87),
-                                )
                               ],
                             ),
                           ))

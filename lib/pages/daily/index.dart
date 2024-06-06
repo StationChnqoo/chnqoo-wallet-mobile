@@ -5,6 +5,7 @@ import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/constants/x.dart';
 import 'package:chnqoo_wallet/pages/daily/widgets/item.dart';
 import 'package:chnqoo_wallet/pages/daily/widgets/stable.dart';
+import 'package:chnqoo_wallet/routes/routes.dart';
 import 'package:chnqoo_wallet/widgets/my_toolbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +119,16 @@ class DailyPageState extends State<DailyPage> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12)),
-                    child: DailyItem(ft: ft));
+                    child: DailyItem(
+                      ft: ft,
+                      onPress: (FundToday ft) {
+                        Get.toNamed(RoutesClass.H5, parameters: {
+                          "title": ft.name,
+                          "source":
+                              'https://h5.1234567.com.cn/app/fund-details/?fCode=${ft.id}'
+                        });
+                      },
+                    ));
               }
             }),
       ),

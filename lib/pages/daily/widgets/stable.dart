@@ -1,6 +1,8 @@
 import 'package:chnqoo_wallet/constants/fund_today.dart';
 import 'package:chnqoo_wallet/pages/daily/widgets/item.dart';
+import 'package:chnqoo_wallet/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DailyStable extends StatefulWidget {
   List<FundToday> list;
@@ -133,7 +135,16 @@ class DailyStableState extends State<DailyStable>
                     children: [
                       ...datas.asMap().entries.map((e) => Container(
                             margin: EdgeInsets.symmetric(vertical: 4),
-                            child: DailyItem(ft: e.value),
+                            child: DailyItem(
+                              ft: e.value,
+                              onPress: (FundToday ft) {
+                                Get.toNamed(RoutesClass.H5, parameters: {
+                                  "title": ft.name,
+                                  "source":
+                                      'https://h5.1234567.com.cn/app/fund-details/?fCode=${ft.id}'
+                                });
+                              },
+                            ),
                           ))
                     ],
                   )
