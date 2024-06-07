@@ -19,7 +19,7 @@ class _HomeCountState extends State<HomeCount> {
   myPercent(int i) {
     int sum = counts[0].toInt() + counts[1].toInt() + counts[2].toInt();
     if (sum == 0) {
-      return '0.00%';
+      return '0.0%';
     } else {
       return (counts[i] / sum * 100).toDouble().toStringAsFixed(2) + '%';
     }
@@ -40,11 +40,11 @@ class _HomeCountState extends State<HomeCount> {
                   children: [
                     ...counts.asMap().entries.map(
                           (e) => Text(
-                            '${[
-                              '涨',
-                              '跌',
-                              '平'
-                            ][e.key]}${e.value}家 / ${myPercent(e.key)}',
+                            '${e.value}家·${myPercent(e.key)}${[
+                              '↑',
+                              '↓',
+                              ''
+                            ][e.key]}',
                             style: TextStyle(
                                 fontSize: 12,
                                 color: [
@@ -57,7 +57,7 @@ class _HomeCountState extends State<HomeCount> {
                   ],
                 ),
                 SizedBox(
-                  height: 5,
+                  height: 10,
                 ),
                 Row(
                   children: [

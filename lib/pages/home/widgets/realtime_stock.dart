@@ -85,7 +85,7 @@ class HomeRealtimeStockState extends State<HomeRealtimeStock> {
                                       e.f58,
                                       style: TextStyle(
                                           fontSize: 12,
-                                          color: Colors.black54
+                                          color: Colors.black87
                                           // fontWeight: FontWeight.w500
                                       ),
                                     ),
@@ -97,11 +97,11 @@ class HomeRealtimeStockState extends State<HomeRealtimeStock> {
                     ],
                   ),
                 )),
-        Row(
-          children: [
-            stocks.length > 0 ? loadPicture(stocks[currentStock]) : Container()
-          ],
-        )
+        // Row(
+        //   children: [
+        //     stocks.length > 0 ? loadPicture(stocks[currentStock]) : Container()
+        //   ],
+        // )
       ],
     );
   }

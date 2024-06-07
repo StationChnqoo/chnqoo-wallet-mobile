@@ -213,4 +213,15 @@ class Services {
     );
     return response.data;
   }
+
+  queryStocksRank() async {
+    dio.options.baseUrl = 'https://push2.eastmoney.com';
+    dio.options.headers = {
+      'referer': 'https://data.eastmoney.com/bkzj/hy_5.html'
+    };
+    Response response = await dio.get(
+      '/api/qt/clist/get?cb=&fid=f62&po=1&pz=99&pn=1&np=1&fltt=2&invt=2&fs=m%3A90+t%3A2&fields=f12%2Cf14%2Cf2%2Cf3%2Cf62%2Cf184%2Cf66%2Cf69%2Cf72%2Cf75%2Cf78%2Cf81%2Cf84%2Cf87%2Cf204%2Cf205%2Cf124%2Cf1%2Cf13',
+    );
+    return response.data;
+  }
 }

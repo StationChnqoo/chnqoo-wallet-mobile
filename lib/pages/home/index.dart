@@ -9,6 +9,7 @@ import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/mixin/lifecycle.dart';
 import 'package:chnqoo_wallet/pages/home/widgets/count.dart';
 import 'package:chnqoo_wallet/pages/home/widgets/menus.dart';
+import 'package:chnqoo_wallet/pages/home/widgets/rank.dart';
 import 'package:chnqoo_wallet/pages/home/widgets/realtime_stock.dart';
 import 'package:chnqoo_wallet/pages/home/widgets/toolbar.dart';
 import 'package:flutter/cupertino.dart';
@@ -106,6 +107,7 @@ class HomePageState extends State<HomePage> with Lifecycle {
               height: 12,
             ),
             HomeRealtimeStock(),
+            HomeRank(),
             SizedBox(
               height: 12,
             ),
