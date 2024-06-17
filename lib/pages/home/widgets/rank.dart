@@ -41,14 +41,24 @@ class _HomeRankState extends State<HomeRank> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '${e.key + 1}.${e.value.f14}',
-                          style: TextStyle(fontSize: 14, color: Colors.black87),
+                        Flexible(
+                          fit: FlexFit.tight,
+                          child: Text(
+                            '${e.key + 1}.${e.value.f14}',
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black87,
+                                overflow: TextOverflow.ellipsis),
+                          ),
                         ),
                         Text(
                           '${e.value.f3.toDouble().toStringAsFixed(2)}%',
                           style: TextStyle(
-                              color: [Colors.red, Colors.green][index]),
+                              color: e.value.f3.toDouble() > 0
+                                  ? Colors.red
+                                  : e.value.f3.toDouble() < 0
+                                      ? Colors.green
+                                      : Colors.grey),
                         )
                       ],
                     ),
@@ -75,7 +85,7 @@ class _HomeRankState extends State<HomeRank> {
                     SizedBox(
                       width: 12,
                     ),
-                    buildIems(1, list.sublist(list.length - SIZE, list.length))
+                    buildIems(1, list.sublist(list.length - SIZE, list.length).reversed.toList())
                   ],
                 )
               ],
