@@ -7,6 +7,7 @@ part of 'stock.dart';
 // **************************************************************************
 
 Stock _$StockFromJson(Map<String, dynamic> json) => Stock(
+      f43: json['f43'] as num,
       f57: json['f57'] as String,
       f58: json['f58'] as String,
       f47: json['f47'] as num,
@@ -16,6 +17,7 @@ Stock _$StockFromJson(Map<String, dynamic> json) => Stock(
     );
 
 Map<String, dynamic> _$StockToJson(Stock instance) => <String, dynamic>{
+      'f43': instance.f43,
       'f57': instance.f57,
       'f58': instance.f58,
       'f47': instance.f47,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chnqoo_wallet/constants/fonts.dart';
 import 'package:chnqoo_wallet/constants/services.dart';
 import 'package:chnqoo_wallet/constants/stock_rank.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,14 @@ class HomeRank extends StatefulWidget {
 class _HomeRankState extends State<HomeRank> {
   List<StockRank> list = [];
   int SIZE = 10;
+
+  Color myColor(num n) {
+    return n > 0
+        ? Colors.red
+        : n < 0
+            ? Colors.green
+            : Colors.black54;
+  }
 
   buildIems(int index, List<StockRank> datas) {
     return Flexible(
@@ -37,7 +46,7 @@ class _HomeRankState extends State<HomeRank> {
                     color: [Colors.red, Colors.green][index]),
               ),
               ...datas.asMap().entries.map((e) => Container(
-                    margin: EdgeInsets.symmetric(vertical: 2),
+                    // margin: EdgeInsets.symmetric(vertical: 2),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -51,14 +60,21 @@ class _HomeRankState extends State<HomeRank> {
                                 overflow: TextOverflow.ellipsis),
                           ),
                         ),
-                        Text(
-                          '${e.value.f3.toDouble().toStringAsFixed(2)}%',
-                          style: TextStyle(
-                              color: e.value.f3.toDouble() > 0
-                                  ? Colors.red
-                                  : e.value.f3.toDouble() < 0
-                                      ? Colors.green
-                                      : Colors.grey),
+                        Row(
+                          children: [
+                            Text(
+                              '${e.value.f3.toDouble().toStringAsFixed(2)}',
+                              style: TextStyle(
+                                  fontFamily: Fonts.TimebombBb,
+                                  fontSize: 18,
+                                  color: myColor(e.value.f3)),
+                            ),
+                            Text(
+                              ' %',
+                              style: TextStyle(
+                                  color: myColor(e.value.f3), fontSize: 10),
+                            )
+                          ],
                         )
                       ],
                     ),
@@ -85,7 +101,12 @@ class _HomeRankState extends State<HomeRank> {
                     SizedBox(
                       width: 12,
                     ),
-                    buildIems(1, list.sublist(list.length - SIZE, list.length).reversed.toList())
+                    buildIems(
+                        1,
+                        list
+                            .sublist(list.length - SIZE, list.length)
+                            .reversed
+                            .toList())
                   ],
                 )
               ],

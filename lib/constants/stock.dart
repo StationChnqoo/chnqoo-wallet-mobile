@@ -4,6 +4,8 @@ part 'stock.g.dart';
 
 @JsonSerializable()
 class Stock {
+  /** 当前净值 */
+  num f43;
   /** 股票代号 */
   String f57;
   /** 股票名字 */
@@ -18,6 +20,7 @@ class Stock {
   String code;
 
   Stock({
+    required this.f43,
     required this.f57,
     required this.f58,
     required this.f47,
@@ -35,17 +38,17 @@ class Stock {
       throw FormatException("Unexpected type for dynamic property");
     }
   }
-  
+
   // factory Bond.fromJson(Map<String, dynamic> json) => _$BondFromJson(json);
   factory Stock.fromJson(Map<String, dynamic> json) {
     return Stock(
-      f57: json['f57'],
-      f58: json['f58'],
-      f47: json['f47'],
-      f48: json['f48'],
-      f170: json['f170'],
-      code: ''
-    );
+        f43: json['f43'],
+        f57: json['f57'],
+        f58: json['f58'],
+        f47: json['f47'],
+        f48: json['f48'],
+        f170: json['f170'],
+        code: '');
   }
 
   Map<String, dynamic> toJson() => _$StockToJson(this);

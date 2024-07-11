@@ -41,6 +41,14 @@ class HomeRealtimeStockState extends State<HomeRealtimeStock> {
             )));
   }
 
+  Color myColor(num n) {
+    return n > 0
+        ? Colors.red
+        : n < 0
+            ? Colors.green
+            : Colors.black54;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -51,57 +59,89 @@ class HomeRealtimeStockState extends State<HomeRealtimeStock> {
                 margin: EdgeInsets.only(bottom: 12),
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ...stocks.map((e) => Container(
-                            child: Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          (e.f170 / 100).toStringAsFixed(2) + '%',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              // fontFamily: Fonts.TimebombBb,
-                                              color: e.f170 > 0
-                                                  ? Colors.red
-                                                  : e.f170 < 0
-                                                      ? Colors.green
-                                                      : Colors.black54),
-                                        ),
-                                        // Text(
-                                        //   '%',
-                                        //   style: TextStyle(
-                                        //       fontSize: 10,
-                                        //       color: Colors.black87),
-                                        // )
-                                      ],
-                                    ),
-                                    Text(
-                                      e.f58,
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.black87
-                                          // fontWeight: FontWeight.w500
+                      ...stocks.map(
+                        (e) => Container(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        e.f57,
+                                        style: TextStyle(
+                                            fontSize: 14, color: Colors.black54
+                                            // fontWeight: FontWeight.w500
+                                            ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ))
+                                      SizedBox(
+                                        width: 6,
+                                      ),
+                                      Text(
+                                        e.f58,
+                                        style: TextStyle(
+                                            fontSize: 12, color: Colors.black87
+                                            // fontWeight: FontWeight.w500
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        (e.f43 / 100).toStringAsFixed(2),
+                                        style: TextStyle(
+                                            color: myColor(e.f170),
+                                            // fontFamily: Fonts.TimebombBb,
+                                            fontSize: 12),
+                                      ),
+                                      Text(
+                                        ' / ',
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 12),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            (e.f170 / 100).toStringAsFixed(2),
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                // fontWeight: FontWeight.w500,
+                                                // fontFamily: Fonts.TimebombBb,
+                                                color: myColor(e.f170)),
+                                          ),
+                                          Text(
+                                            ' %',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                // fontFamily: Fonts.HarmonyOS,
+                                                color: myColor(e.f170)),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                  // Text(
+                                  //   '%',
+                                  //   style: TextStyle(
+                                  //       fontSize: 10,
+                                  //       color: Colors.black87),
+                                  // )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 )),
-        // Row(
-        //   children: [
-        //     stocks.length > 0 ? loadPicture(stocks[currentStock]) : Container()
-        //   ],
-        // )
       ],
     );
   }

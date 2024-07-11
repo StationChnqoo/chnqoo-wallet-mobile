@@ -18,13 +18,13 @@ class MarketEtfState extends State<MarketEtf> {
         ? '--'
         : (widget.list
                     .reduce((value, element) => Stock(
-                          f57: value.f57,
-                          f58: value.f58,
-                          f47: value.f47,
-                          f48: value.f48,
-                          f170: value.f170 + element.f170,
-                          code: ''
-                        ))
+                        f43: value.f43,
+                        f57: value.f57,
+                        f58: value.f58,
+                        f47: value.f47,
+                        f48: value.f48,
+                        f170: value.f170 + element.f170,
+                        code: ''))
                     .f170 /
                 widget.list.length)
             .toStringAsFixed(2);
